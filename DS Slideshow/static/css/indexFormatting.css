@@ -5,6 +5,10 @@
 	border: none;
 }
 
+.slideshowLink {
+	width: 100%;	
+}
+
 .slideshowDiv {
 	width: 100%;
 	height: 100%;
