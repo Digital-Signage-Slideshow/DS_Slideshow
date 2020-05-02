@@ -110,7 +110,7 @@ try:
 	if __name__ == '__main__':
 		app.run(host = '0.0.0.0', debug = True, port = 5001)
 
-		with sqlite3.connection('linkDatabase.db') as connection:
+		with sqlite3.connect('linkDatabase.db') as connection:
 			connection.execute('create table if not exists links(\'path\' text primary key)')
 
 except Exception as e:
