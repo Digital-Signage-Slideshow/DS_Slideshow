@@ -1,118 +1,119 @@
 # -*- coding: utf-8 -*-
-# Written by Harry Lees
-
-# Dependancies Below
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, abort, jsonify
 import os
 import sqlite3
 from werkzeug.utils import secure_filename
 
-slideshowTime = 10000 # variable to control amount of time slides are shown for - miliseconds
-uploadFolder = 'static/images/slideshowImages' # variable to control where the images that are uploaded will be stored
-allowedExtensions = ['png', 'jpg', 'jpeg']
+__author__ = 'Harry Lees'
+__date__ = '05.08.2020'
+
+rotation_speed = 10000 # in miliseconds
+upload_folder = 'static/images/slideshowImages'
+allowed_extensions = ['png', 'jpg', 'jpeg']
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = uploadFolder
 
-@app.route('/removeImage', methods = ['GET', 'POST'])
-def removeImage():
+allowed_files = lambda filename : '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
+
+def get_links() -> tuple:
+	with sqlite3.connect('link_database.db') as connection:
+		cursor = connection.execute('SELECT * FROM links')
+		return cursor.fetchall()
+
+@app.errorhandler(500)
+def custom_500(error : dict):
+	response = jsonify({'message' : error.description['message']})
+
+@app.route('/remove_image', methods = ['GET', 'POST'])
+def remove_image():
 	name = request.form.to_dict()
 	index = int(name['imageID']) - 1
-	files = os.listdir(uploadFolder)
 
-	os.remove(f'{uploadFolder}/{files[index]}')
+	files = os.listdir(upload_folder)
+
+	os.remove(f'{upload_folder}/{files[index]}')
 	return redirect('/setup')
 
-@app.route('/removeLink', methods = ['GET', 'POST'])
-def removeLink():
+@app.route('/remove_link', methods = ['GET', 'POST'])
+def remove_link():
 	link = request.form.to_dict()
 	index = int(link['linkID']) - 1
 
-	with sqlite3.connect('linkDatabase.db') as connection:
-		cursor = connection.execute('select * from links')
+	with sqlite3.connect('link_database.db') as connection:
+		cursor = connection.cursor()
 
-		for i, row in enumerate(cursor):
-			if i == index:
-				connection.execute(f'delete from links where path = \'{row[0]}\';')
+		data = cursor.execute('SELECT * FROM LINKS')
+		path_name = list(data.fetchall())[index][0]
+
+		cursor.execute('DELETE FROM LINKS WHERE path = ?', [path_name])
 
 	return redirect('/setup')
 
-@app.route('/alterRotationSpeed', methods = ['GET', 'POST'])
-def alterRotationSpeed():
-	global slideshowTime
+@app.route('/alter_rotation_speed', methods = ['GET', 'POST'])
+def alter_rotation_speed():
+	global rotation_speed
 
 	try:
-		slideshowTime = int(request.form.to_dict()['alterRotationSpeed'])*1000
+		rotation_speed = float(request.form.to_dict()['alterRotationSpeed']) * 1000
 	except Exception as e:
 		flash('Please enter a number')
 
 	return redirect('/setup')
 
-@app.route('/uploadFile', methods = ['GET', 'POST'])
-def uploadFile():
+@app.route('/upload_file', methods = ['GET', 'POST'])
+def upload_file():
 	if request.method == 'POST':
-		if 'file' not in request.files: # check to see whether a file was uploaded
+		if 'file' not in request.files:
 			return redirect('/setup')
 
 		file = request.files['file']
 	else:
-		return '<p style = \'font-family: Verdana, Geneva; font-size: 12px;\'>Error, failed to upload file.</p>'
+		abort(500, 'failed to upload file')
 
-	if file.filename == '': # check that the file has a title
-		return redirect('/setup')
-
-	if file and allowedFiles(file.filename): # check that the files extension is valid
+	if file and allowed_files(file.filename):
 		filename = secure_filename(file.filename)
-		file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+		file.save(os.path.join(upload_folder, filename))
 
 	return redirect('/setup')
 
-
-@app.route('/uploadLink', methods = ['GET', 'POST'])
-def uploadLink():
+@app.route('/upload_link', methods = ['GET', 'POST'])
+def upload_link():
 	if request.method == 'POST':
-		uploadedLink = request.form.to_dict()['linkUpload']
+		link = request.form.to_dict()['linkUpload']
 	else:
-		return '<p style = \'font-family: Verdana, Geneva; font-size: 12px;\'>Error, failed to upload link.</p>'
+		abort(500, 'failed to upload link')
 
-	with sqlite3.connect('linkDatabase.db') as connection:
-		connection.execute('create table if not exists links(\'path\' text primary key)')
-		connection.execute(f'insert into links values(\'{uploadedLink}\')')
+	with sqlite3.connect('link_database.db') as connection:
+		connection.execute('INSERT INTO links VALUES(?)', [link])
 
 	return redirect('/setup')
 
 @app.route('/setup')
-def returnSetup():
-	global slideshowTime
+def return_setup():
+	global rotation_speed
 
-	images = os.listdir(uploadFolder) # reads all of the images in the images folder
+	images = os.listdir(upload_folder)
 
-	with sqlite3.connect('linkDatabase.db') as connection:
-		cursor = connection.execute('select * from links')
-		links = cursor.fetchall()
-
-	return render_template('setup.html', images = images, links = [i[0] for i in links], rotationSpeed = slideshowTime//1000)
-
-def allowedFiles(filename):
-	return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowedExtensions
+	return render_template(
+		'setup.html', 
+		images = images, 
+		links = [i[0] for i in get_links()], 
+		rotation_speed = rotation_speed // 1000
+	)
 
 @app.route('/')
-def returnIndex():
-	images = os.listdir(uploadFolder) # reads all of the images in the images folder
+def return_index():
+	images = os.listdir(upload_folder)
 
-	with sqlite3.connect('linkDatabase.db') as connection:
-		cursor = connection.execute('select * from links')
-		links = cursor.fetchall()
+	return render_template(
+		'index.html', 
+		images = images, 
+		links = [i[0] for i in get_links()],
+		rotation_speed = rotation_speed
+	)
 
-	return render_template('index.html', images = images, slideshowTime = slideshowTime, links = [i[0] for i in links])
+if __name__ == '__main__':
+	app.run(host = '0.0.0.0', debug = True, port = 5000)
 
-try:
-	if __name__ == '__main__':
-		app.run(host = '0.0.0.0', debug = True, port = 5001)
-
-		with sqlite3.connect('linkDatabase.db') as connection:
-			connection.execute('create table if not exists links(\'path\' text primary key)')
-
-except Exception as e:
-	print('Error: ', e)
-	print('shutting down...')
+	with sqlite3.connect('link_database.db') as connection:
+		connection.execute("CREATE TABLE IF NOT EXISTS links('path' TEXT PRIMARY KEY)")

@@ -16,7 +16,7 @@
 {% if links or images %}
 	<div class = 'slideshowDiv'>
 		{% for image in images %}
-			<img class = 'slideshowContent' src = '{{ url_for('static', filename = 'images/slideshowImages/' + image) }}'>
+			<img class = 'slideshowContent' src = '{{ url_for('static', filename = 'images/slideshow_images/' + image) }}'>
 		{% endfor %}
 
 		{% for link in links %}
@@ -54,7 +54,7 @@ function carousel() {
 	if (slideIndex > x.length) {slideIndex = 1; location.reload();}
 
 	x[slideIndex - 1].style.display = 'block';
-	setTimeout(carousel, {{ slideshowTime }});
+	setTimeout(carousel, {{ rotation_speed }});
 }
 </script>
 
