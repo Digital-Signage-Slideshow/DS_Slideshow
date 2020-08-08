@@ -45,4 +45,4 @@ This is an open source project written almost entirely in Python3. If you would 
 Rearranging the position of links/ images uploaded. Currently, there is no way of rearranging the order of your slides. This is a feature I am working on!
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+This code is available under the [MIT](https://choosealicense.com/licenses/mit/) licence
