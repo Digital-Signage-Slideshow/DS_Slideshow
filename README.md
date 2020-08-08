@@ -1,13 +1,21 @@
-# DS-Slideshow
-A web based digital signage application
+# Digital Signage Slideshow
 
-<b>Dependancies:</b><br>
-Python3, Flask<br>
+DS Signage is a lightweight flask based Digital Signage system I designed for use on my Raspberry Pi.
 
-<b>Usage: </b><br>
-Clone the repository and open a screen or other utility to keep the program running in the background. Run controller.py in the DS-Slideshow folder. If needed, this application can be run in Apache or Nginx.<br>
-You should see the loading text:
-```shell
+## Installation
+
+This project can be installed by cloning this repo and then running the controller.py script to start flask running. There is a requirements.txt file for installing the project dependancies.
+
+```bash
+python3 -m pip install -r requirements.txt
+python3 controller.py
+```
+
+## Usage
+
+For small personal uses and localhost sites that aren't exposed to the internet, it may be sufficient to run using the Flask dev server, this can be done by simply running controller.py and then opening the url in your browser.
+
+```
 pi@raspberrypi:~ & python3 controller.py
 
  * Serving Flask app "controller" (lazy loading)
@@ -21,5 +29,20 @@ pi@raspberrypi:~ & python3 controller.py
  * Debugger PIN: xxx-xxx-xxx
 ```
 
-The application is hosted on port 5001, open  e.g. 127.0.0.1:5001<br>
-go to 127.0.0.1:5001/setup to get into the setup menu for the slideshow. Remove the deleteMe.jpg file and add your own content.<br>
+opening 127.0.0.1:5001/setup on the host machine will launch into the configuration screen. From here you can remove the deleteMe.png file and add any relevant files/ links from the bottom of the page. You can then open 127.0.0.1:5001 and you will see your slides rotating!
+
+Although the project is set up to be run with the default Flask dev server, as per the Flask official docs:
+
+"When running publicly rather than in development, you should not use the built-in development server (flask run). The development server is provided by Werkzeug for convenience, but is not designed to be particularly efficient, stable, or secure."
+
+In light of this, it is reccommended to deploy this script to a proper production server, official support and docs will come on this soon. Until then, you can read the official flask docs on [deploying an app](https://flask.palletsprojects.com/en/1.1.x/deploying/)
+
+## Contributing
+This is an open source project written almost entirely in Python3. If you would like to contribute, please feel free to create a merge request or issue to discuss changes.
+
+## Upcomming features
+
+Rearranging the position of links/ images uploaded. Currently, there is no way of rearranging the order of your slides. This is a feature I am working on!
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
