@@ -1,0 +1,104 @@
+<html>
+	<head>
+		<link rel = 'stylesheet' href = '{{ url_for ('static', filename = 'css/setupFormatting.css') }}'>
+		<title>DS Slideshow</title>
+	</head>
+
+	<body>
+		<h1>DS Slideshow Setup</h1>
+		<div class = 'previewDiv' id = 'previewDiv'></div>
+
+		<div class = 'listItemsContainer'>
+			{% if not images and not links%}
+				<div class = 'noItems'>
+					<p>No Content to display - To add content, use the controls at the bottom.</p>
+				</div>
+			{% endif %}
+
+
+			{% for image in images %}
+				<div class = 'listItem'>
+					<div class = 'imageName'>{{ image }}</div>
+					<p id = '{{ loop.index }}' class = 'preview' onclick = 'showImagePreview(this.id)'>Preview</p>
+					<form action = '/remove_image', method = 'POST'>
+						<input type = 'hidden' name = 'imageID' value = '{{ loop.index }}'>
+						<input class = 'delete' name = 'submit_button' type = 'image' src = 'static/images/deleteIcon.png'>
+					</form>
+				</div>
+			{% endfor %}
+
+			{% for link in links %}
+				<div class = 'listItem'>
+					<div class = 'imageName'>{{ link }}</div>
+					<p id = '{{ loop.index }}' class = 'preview' onclick = 'showLinkPreview(this.id)'>Preview</p>
+					<form action = '/remove_link', method = 'POST'>
+						<input type = 'hidden' name = 'linkID' value = '{{ link }}'>
+						<input class = 'delete' name = 'submit_button' type = 'image' src = 'static/images/deleteIcon.png'>
+					</form>
+				</div>
+			{% endfor %}
+		</div>
+
+		<div class = 'uploadFooter'>
+			<div class = 'uploadContent'>
+				<b><p style = 'font-size: 16px'>Add Content: </p></b>
+				<div class = 'uploadImagesDiv'>
+					<form type = 'file' method = 'POST' enctype = 'multipart/form-data' action = '/upload_file'>
+						<input type = 'file' name = 'file' required style = 'outline: none'>
+						<input type = 'submit' class = 'submitButton' value = 'Upload' formmethod = 'POST'>
+					</form>
+				</div>
+
+				<div class = 'uploadLinkDiv'>
+					<form action = '/upload_link' method = 'POST'>
+						<label for = 'upload_link'>Link: </label>
+						<input type = 'text' id = 'upload_link' name = 'upload_link' style = 'width: 210px' class = 'textField' autocomplete = 'off' placeholder = 'Enter link' required></input>
+						<input type = 'submit' value = 'Add Link' formmethod = 'POST' class = 'submitButton'>
+					</form>
+
+				<div class = 'alterRotationSpeed'>
+					<form action = '/alter_rotation_speed' method = 'POST'>
+						<label for = 'alterRotationSpeed'>Slideshow Speed: </label>
+						<input type = 'text' id = 'alter_rotation_speed' name = 'alter_rotation_speed' style = 'width: 95px' class = 'textField' autocomplete = 'off' placeholder = '{{ rotation_speed | round | int }}' required></input>
+						<input type = 'submit' value = 'Change Speed' formmethod = 'POST' class = 'submitButton'>
+					</form>
+				</div>
+
+				</div>
+			</div>
+			<div class = 'uploadInstructions'>
+				<p>Supported file formats: .png .jpg .jpeg</p>
+				<p>Aspect ratio may not be maintained for websites in preview</p>
+				<p>Some websites may not render on slideshow, please check before uploading</p>
+				<p>Current Rotation Speed: {{ rotation_speed }}s per slide</p>
+			</div>
+		</div>
+	</body>
+	
+	<script>
+		var imagePreview = document.createElement('img');
+		var linkPreview = document.createElement('iframe');
+
+		var images = {{ images | safe }};
+		function showImagePreview(index){
+			document.getElementById('previewDiv').innerHTML = '';
+
+			imagePreview.src = ('/static/images/slideshowImages/' + images[index - 1])
+			imagePreview.className = ('previewImage')
+
+
+			document.getElementById('previewDiv').appendChild(imagePreview)
+		}
+
+		var links = {{ links | safe }};
+		function showLinkPreview(index){
+			document.getElementById('previewDiv').innerHTML = '';
+
+			linkPreview.src = (links[index - 1])
+			linkPreview.className = ('previewLink')
+
+			document.getElementById('previewDiv').appendChild(linkPreview)
+		}
+	</script>
+
+</html>
