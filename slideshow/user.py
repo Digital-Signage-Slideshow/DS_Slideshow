@@ -1,6 +1,5 @@
 from flask_login import UserMixin
 
-
 class User(UserMixin):
     def is_active(self):
         return True

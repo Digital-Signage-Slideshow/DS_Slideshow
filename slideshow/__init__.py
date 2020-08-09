@@ -1,9 +1,7 @@
 from flask import Flask
-from slideshow.auth import auth
 
-from .extensions import db, migrate
+from .extensions import db, migrate, bcrypt, login_manager
 from .config import DevelopmentConfig
-
 
 def create_app():
     app = Flask(__name__)
@@ -16,21 +14,13 @@ def create_app():
 
     extensions(app)
 
-    return app
+    with app.app_context():
+        db.create_all()
 
+    return app
 
 def extensions(app):
     db.init_app(app)
     migrate.init_app(app, db)
-    # login_manager.init_app(app)
-    return None
-
-
-def authentication(app, user_model):
-    # login_manager.login_view = 'user.login'
-    pass
-
-# database.create_all()
-
-# app.register_blueprint(auth)
-# app.secret_key = os.urandom(24)
+    bcrypt.init_app(app)
+    login_manager.init_app(app)

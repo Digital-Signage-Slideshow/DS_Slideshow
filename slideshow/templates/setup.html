@@ -1,76 +1,109 @@
 <html>
 	<head>
 		<link rel = 'stylesheet' href = '{{ url_for ('static', filename = 'css/setupFormatting.css') }}'>
+		<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat'>
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+		<script src="https://kit.fontawesome.com/e9818d9c7f.js" crossorigin="anonymous"></script>
 		<title>DS Slideshow</title>
+
+		<style>
+			input, label {
+				display:block;
+			}
+
+			body, h1, h2, h3, h4, b p {
+				font-family: 'Montserrat', sans-serif;
+			}
+
+			body {
+				color: #222221;
+				background-color: white;
+			}
+		</style>
 	</head>
 
 	<body>
-		<h1>DS Slideshow Setup</h1>
-		<div class = 'previewDiv' id = 'previewDiv'></div>
 
-		<div class = 'listItemsContainer'>
-			{% if not images and not links%}
-				<div class = 'noItems'>
-					<p>No Content to display - To add content, use the controls at the bottom.</p>
-				</div>
-			{% endif %}
+		<!-- SIDEBAR -->
+		<div class = 'w3-sidebar w3-light-grey w3-bar-block' style = 'width: 25%;'>
+			<h4 class = 'w3-bar-item'><b><a href = '{{ url_for("core.logout") }}' style = 'text-decoration: none; color: inherit'>LOGOUT</a></b></h4>
 
+				<div style = 'width: 20vw;' class = 'w3-bar-item'>
+					<form type = 'file' method = 'POST' enctype = 'multipart/form-data' action = '/upload_file'>
+						<label class = 'w3-button w3-blue'>
+							<span>Choose File <i class = 'fas fa-image'></i></span>
+							<input name = 'file' type = 'file' style = 'display: none' required>
+						</label>
 
-			{% for image in images %}
-				<div class = 'listItem'>
-					<div class = 'imageName'>{{ image }}</div>
-					<p id = '{{ loop.index }}' class = 'preview' onclick = 'showImagePreview(this.id)'>Preview</p>
-					<form action = '/remove_image', method = 'POST'>
-						<input type = 'hidden' name = 'imageID' value = '{{ loop.index }}'>
-						<input class = 'delete' name = 'submit_button' type = 'image' src = 'static/images/deleteIcon.png'>
+						<input type = 'submit' class = 'w3-btn w3-blue' value = 'Upload' formmethod = 'POST'>
 					</form>
 				</div>
-			{% endfor %}
-
-			{% for link in links %}
-				<div class = 'listItem'>
-					<div class = 'imageName'>{{ link }}</div>
-					<p id = '{{ loop.index }}' class = 'preview' onclick = 'showLinkPreview(this.id)'>Preview</p>
-					<form action = '/remove_link', method = 'POST'>
-						<input type = 'hidden' name = 'linkID' value = '{{ link }}'>
-						<input class = 'delete' name = 'submit_button' type = 'image' src = 'static/images/deleteIcon.png'>
+	
+				<div style = 'width: 20vw' class = 'w3-bar-item'>
+					<form action = '/upload_link' method = 'POST'>
+						<p>								
+							<label for = 'upload_link'><b>Link</b></label>
+							<input type = 'text' id = 'upload_link' name = 'upload_link' class = 'w3-input w3-border' autocomplete = 'off' placeholder = 'Enter link' required>
+						</p>
+						<input type = 'submit' value = 'Add Link' formmethod = 'POST' class = 'w3-btn w3-blue'>
 					</form>
 				</div>
-			{% endfor %}
+
+				<div style = 'width: 20vw;' class = 'w3-bar-item'>
+					<form action = '/alter_rotation_speed' method = 'POST'>
+						<p>
+							<label for = 'alter_rotation_speed'><b>Slideshow Speed</b></label>
+							<input type = 'text' id = 'alter_rotation_speed' name = 'alter_rotation_speed' class = 'w3-input w3-border' autocomplete = 'off' placeholder = '{{ rotation_speed | round | int }}' required></input>
+						</p>
+
+						<input type = 'submit' value = 'Change Speed' formmethod = 'POST' class = 'w3-btn w3-blue'>
+					</form>
+				</div>
 		</div>
 
-		<div class = 'uploadFooter'>
-			<div class = 'uploadContent'>
-				<b><p style = 'font-size: 16px'>Add Content: </p></b>
-				<div class = 'uploadImagesDiv'>
-					<form type = 'file' method = 'POST' enctype = 'multipart/form-data' action = '/upload_file'>
-						<input type = 'file' name = 'file' required style = 'outline: none'>
-						<input type = 'submit' class = 'submitButton' value = 'Upload' formmethod = 'POST'>
-					</form>
-				</div>
-
-				<div class = 'uploadLinkDiv'>
-					<form action = '/upload_link' method = 'POST'>
-						<label for = 'upload_link'>Link: </label>
-						<input type = 'text' id = 'upload_link' name = 'upload_link' style = 'width: 210px' class = 'textField' autocomplete = 'off' placeholder = 'Enter link' required></input>
-						<input type = 'submit' value = 'Add Link' formmethod = 'POST' class = 'submitButton'>
-					</form>
-
-				<div class = 'alterRotationSpeed'>
-					<form action = '/alter_rotation_speed' method = 'POST'>
-						<label for = 'alterRotationSpeed'>Slideshow Speed: </label>
-						<input type = 'text' id = 'alter_rotation_speed' name = 'alter_rotation_speed' style = 'width: 95px' class = 'textField' autocomplete = 'off' placeholder = '{{ rotation_speed | round | int }}' required></input>
-						<input type = 'submit' value = 'Change Speed' formmethod = 'POST' class = 'submitButton'>
-					</form>
-				</div>
-
-				</div>
-			</div>
-			<div class = 'uploadInstructions'>
-				<p>Supported file formats: .png .jpg .jpeg</p>
-				<p>Aspect ratio may not be maintained for websites in preview</p>
-				<p>Some websites may not render on slideshow, please check before uploading</p>
-				<p>Current Rotation Speed: {{ rotation_speed }}s per slide</p>
+		<!-- PAGE CONTENT -->
+		<div class = 'w3-content w3-main w3-padding' style = 'text-align: left; margin-left: 25%;'>
+			<h1>SETUP</h1>
+			<div class = 'previewDiv' id = 'previewDiv'></div>
+	
+			<div class = 'listItemsContainer'>
+				{% if not images and not links%}
+					<div class = 'noItems'>
+						<p>No Content to display - To add content, use the controls at the bottom.</p>
+					</div>
+				{% endif %}
+	
+	
+				{% for image in images %}
+					<div class = 'listItem'>
+						<div class = 'imageName'>{{ image }}</div>
+						
+						<div style = 'display: flex; align-items: center'>
+							<p id = '{{ loop.index }}' class = 'preview' onclick = 'showImagePreview(this.id)'>Preview</p>
+	
+							<form action = '/remove_image' method = 'POST' style = 'height: 0; padding-left: 20px'>
+								<input type = 'hidden' name = 'imageID' value = '{{ loop.index }}'>
+								<a class="far fa-trash-alt" style = 'color: red'></a>
+							</form>
+						</div>
+					</div>
+				{% endfor %}
+	
+				{% for link in links %}
+					<div class = 'listItem'>
+						<div class = 'imageName' style = 'color: darkblue'>{{ link.path }}</div>
+						
+						<div style = 'display: flex; align-items: center'>
+							<p id = '{{ loop.index }}' class = 'preview' onclick = 'showLinkPreview(this.id)'>Preview</p>
+	
+							<form action = '/remove_link' method = 'POST' style = 'height: 0; padding-left: 20px'>
+								<input type = 'hidden' name = 'linkID' value = '{{ link }}'>
+								<i class="far fa-trash-alt" style = 'color: red;'></i>
+							</form>
+						</div>
+					</div>
+				{% endfor %}
 			</div>
 		</div>
 	</body>

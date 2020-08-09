@@ -1,0 +1,16 @@
+{% block content %}
+    <div class = 'content-section'>
+        <form method = 'POST' action = ''>
+            {{ form.hidden_tag() }}
+            {{ form.password.label() }}
+            {{ form.password() }}
+
+            {{ form.confirm_password.label() }}
+            {{ form.confirm_password() }}
+            
+            {{ form.submit() }}
+        </form>
+
+        <p>Account Already setup? <a href = "{{ url_for('core.login') }}">Log in</a></p>
+    </div>
+{% endblock content %}
