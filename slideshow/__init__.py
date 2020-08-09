@@ -1,23 +1,36 @@
 from flask import Flask
-import os
-# from flask_login import login_user, logout_user, login_required, LoginManager
 from slideshow.auth import auth
-from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__)
+from .extensions import db, migrate
+from .config import DevelopmentConfig
 
-app.config['SECRET_KEY'] = 'this_key_is_very_secret'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///slideshow.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-database = SQLAlchemy(app)
+def create_app():
+    app = Flask(__name__)
+
+    app.config.from_object(DevelopmentConfig)
+
+    from .routes import bp as core_bp
+
+    app.register_blueprint(core_bp)
+
+    extensions(app)
+
+    return app
+
+
+def extensions(app):
+    db.init_app(app)
+    migrate.init_app(app, db)
+    # login_manager.init_app(app)
+    return None
+
+
+def authentication(app, user_model):
+    # login_manager.login_view = 'user.login'
+    pass
+
 # database.create_all()
 
 # app.register_blueprint(auth)
 # app.secret_key = os.urandom(24)
-
-# login_manager = LoginManager()
-# login_manager.init_app(app)
-# login_manager.login_view = 'login'
-
-from slideshow import routes
