@@ -4,19 +4,19 @@ DS Signage is a lightweight flask based Digital Signage system I designed for us
 
 ## Installation
 
-This project can be installed by cloning this repo and then running the controller.py script to start flask running. There is a requirements.txt file for installing the project dependancies.
+This project can be installed by cloning this repo and then running the run.py script to start flask running. There is a requirements.txt file for installing the project dependancies.
 
 ```bash
 python3 -m pip install -r requirements.txt
-python3 controller.py
+python3 run.py
 ```
 
 ## Usage
 
-For small personal uses and localhost sites that aren't exposed to the internet, it may be sufficient to run using the Flask dev server, this can be done by simply running controller.py and then opening the url in your browser.
+For small personal uses and localhost sites that aren't exposed to the internet, it may be sufficient to run using the Flask dev server, this can be done by simply running run.py and then opening the url in your browser.
 
 ```
-pi@raspberrypi:~ & python3 controller.py
+pi@raspberrypi:~ & python3 run.py
 
  * Serving Flask app "controller" (lazy loading)
  * Environment: production
@@ -35,12 +35,12 @@ Although the project is set up to be run with the default Flask dev server, as p
 
 "When running publicly rather than in development, you should not use the built-in development server (flask run). The development server is provided by Werkzeug for convenience, but is not designed to be particularly efficient, stable, or secure."
 
-In light of this, it is reccommended to deploy this script to a proper production server, official support and docs will come on this soon. Until then, you can read the official flask docs on [deploying an app](https://flask.palletsprojects.com/en/1.1.x/deploying/)
+In light of this, it is recommended to deploy this script to a proper production server, official support and docs will come on this soon. Until then, you can read the official flask docs on [deploying an app](https://flask.palletsprojects.com/en/1.1.x/deploying/)
 
 ## Contributing
 This is an open source project written almost entirely in Python3. If you would like to contribute, please feel free to create a merge request or issue to discuss changes.
 
-## Upcomming features
+## Upcoming features
 
 Rearranging the position of links/ images uploaded. Currently, there is no way of rearranging the order of your slides. This is a feature I am working on!
 
