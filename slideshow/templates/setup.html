@@ -1,6 +1,5 @@
 <html>
 	<head>
-		<link rel = 'stylesheet' href = '{{ url_for ('static', filename = 'css/setupFormatting.css') }}'>
 		<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat'>
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
@@ -27,82 +26,74 @@
 
 		<!-- SIDEBAR -->
 		<div class = 'w3-sidebar w3-light-grey w3-bar-block' style = 'width: 25%;'>
+			<h1 class = 'w3-bar-item'>SETUP</h1>
 				<div style = 'width: 20vw;' class = 'w3-bar-item'>
+					<h4><b>Upload Images</b></h4>
+					<p>Supported formats: .png .jpg .jpeg</p>
 					<form type = 'file' method = 'POST' enctype = 'multipart/form-data' action = '/upload_file'>
 						<label class = 'w3-button w3-blue'>
 							<span>Choose File <i class = 'fas fa-image'></i></span>
 							<input name = 'file' type = 'file' style = 'display: none' required>
 						</label>
 
-						<input type = 'submit' class = 'w3-btn w3-blue' value = 'Upload' formmethod = 'POST'>
+						<input type = 'submit' class = 'w3-button w3-blue' value = 'Upload' formmethod = 'POST'>
 					</form>
 				</div>
 	
 				<div style = 'width: 20vw' class = 'w3-bar-item'>
 					<form action = '/upload_link' method = 'POST'>
 						<p>								
-							<label for = 'upload_link'><b>Link</b></label>
+							<h4><b>Link</b></h4>
+							<p>Please enter the entire path to the page. e.g. https://google.co.uk. Note some pages will not work with this software.</p>
 							<input type = 'text' id = 'upload_link' name = 'upload_link' class = 'w3-input w3-border' autocomplete = 'off' placeholder = 'Enter link' required>
 						</p>
-						<input type = 'submit' value = 'Add Link' formmethod = 'POST' class = 'w3-btn w3-blue'>
+						<input type = 'submit' value = 'Add Link' formmethod = 'POST' class = 'w3-button w3-blue'>
 					</form>
 				</div>
 
 				<div style = 'width: 20vw;' class = 'w3-bar-item'>
 					<form action = '/alter_rotation_speed' method = 'POST'>
 						<p>
-							<label for = 'alter_rotation_speed'><b>Slideshow Speed</b></label>
-							<input type = 'text' id = 'alter_rotation_speed' name = 'alter_rotation_speed' class = 'w3-input w3-border' autocomplete = 'off' placeholder = '{{ rotation_speed | round | int }}' required></input>
+							<h4><b>Slideshow Speed</b></h4>
+							<p>Current Speed {{ rotation_speed | round | int }} seconds</p>
+							<input type = 'text' id = 'alter_rotation_speed' name = 'alter_rotation_speed' class = 'w3-input w3-border' autocomplete = 'off' placeholder = 'Speed (s)' required></input>
 						</p>
 
-						<input type = 'submit' value = 'Change Speed' formmethod = 'POST' class = 'w3-btn w3-blue'>
+						<input type = 'submit' value = 'Change Speed' formmethod = 'POST' class = 'w3-button w3-blue'>
 					</form>
 				</div>
-				<h4 class = 'w3-bar-item'><b><a href = '{{ url_for("core.logout") }}' style = 'text-decoration: none; color: inherit'>LOGOUT</a></b></h4>
 
+				<h4 class = 'w3-bar-item'><b><a href = '{{ url_for("core.logout") }}' class = 'w3-button w3-red' style = 'position: absolute; bottom: 10;'>LOGOUT</a></b></h4>
 		</div>
 
 		<!-- PAGE CONTENT -->
-		<div class = 'w3-content w3-main w3-padding' style = 'text-align: left; margin-left: 25%;'>
-			<h1>SETUP</h1>
+		<div class = 'w3-content w3-main w3-padding' style = 'text-align: left; margin-left: 26%;'>
+			<h1>SLIDES</h1>
 			<div class = 'previewDiv' id = 'previewDiv'></div>
 	
-			<div class = 'listItemsContainer'>
+			<div>
 				{% if not images and not links%}
-					<div class = 'noItems'>
+					<div>
 						<p>No Content to display - To add content, use the controls at the bottom.</p>
 					</div>
 				{% endif %}
 	
 	
 				{% for image in images %}
-					<div class = 'listItem'>
-						<div class = 'imageName'>{{ image }}</div>
-						
-						<div style = 'display: flex; align-items: center'>
-							<p id = '{{ loop.index }}' class = 'preview' onclick = 'showImagePreview(this.id)'>Preview</p>
-	
-							<form action = '/remove_image' method = 'POST' style = 'height: 0; padding-left: 20px'>
-								<input type = 'hidden' name = 'imageID' value = '{{ loop.index }}'>
-								<a class="far fa-trash-alt" style = 'color: red'></a>
-							</form>
-						</div>
-					</div>
+					<form action = '/remove_image' method = 'POST' class = 'w3-block' style = 'display: flex; justify-content: space-between; border-bottom: 1px solid lightgrey; align-items: center;'>
+						<p style = 'display: inline;'>{{ image }}</p>	
+						<input type = 'hidden' name = 'image_id' id = 'image_id' value = '{{ image }}'>
+						<button class="far fa-trash-alt w3-button" style = 'color: red; display: inline;' type = 'submit' value = 'items_submitted' name = 'submit' id = 'submit'></button>
+					</form>
 				{% endfor %}
 	
 				{% for link in links %}
-					<div class = 'listItem'>
-						<div class = 'imageName' style = 'color: darkblue'>{{ link.path }}</div>
-						
-						<div style = 'display: flex; align-items: center'>
-							<p id = '{{ loop.index }}' class = 'preview' onclick = 'showLinkPreview(this.id)'>Preview</p>
-	
-							<form action = '/remove_link' method = 'POST' style = 'height: 0; padding-left: 20px'>
-								<input type = 'hidden' name = 'linkID' value = '{{ link.path }}'>
-								<i class="far fa-trash-alt" style = 'color: red;'></i>
-							</form>
-						</div>
-					</div>
+					<!-- <div class = 'w3-container'> -->
+					<form action = '/remove_link' method = 'POST' class = 'w3-block' style = 'display: flex; justify-content: space-between; border-bottom: 1px solid lightgrey; align-items: center;'>
+						<p style = 'color: darkblue; display: inline;'>{{ link.path }}</p>
+						<input type = 'hidden' name = 'link' id = 'image' value = '{{ link.path }}'>
+						<button class="far fa-trash-alt w3-button" style = 'color: red; display: inline;' type = 'submit' value = 'items_submitted' name = 'submit' id = 'submit'></button>
+					</form>
 				{% endfor %}
 			</div>
 		</div>

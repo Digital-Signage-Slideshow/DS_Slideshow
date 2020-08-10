@@ -18,30 +18,26 @@ def allowed_files(filename):
     return lambda f: '.' in filename and filename.rsplit('.', 1)[
         1].lower() in allowed_extensions
 
-
-# def get_links() -> list:
-#     return db.Content.filter_by(type='link')
-
 @bp.errorhandler(500)
 def custom_500(error: dict):
     response = jsonify({'message': error})
 
 @bp.route('/remove_image', methods=['GET', 'POST'])
 def remove_image():
-    name = request.form.to_dict()
-    index = int(name['imageID']) - 1
+    if request.method == 'POST':
+        filename = request.form.get('image_id')
 
-    files = os.listdir(upload_folder)
-
-    os.remove(f'{upload_folder}/{files[index]}')
-    Content.query.filter_by(type='file', path=files[index]).delete()
+        os.remove(f'{upload_folder}/{filename}')
+        Content.query.filter_by(type='file', path = filename).delete()
+        db.session.commit()
 
     return redirect(url_for('core.setup'))
 
 @bp.route('/remove_link', methods=['GET', 'POST'])
 def remove_link():
-    link = request.form.to_dict()
-    Content.query.filter_by(type='link').delete()
+    link = request.form.get('link')
+    Content.query.filter_by(type = 'link', path = link).delete()
+    db.session.commit()
 
     return redirect(url_for('core.setup'))
 
