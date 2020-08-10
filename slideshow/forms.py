@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask import flash
 from wtforms import PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, EqualTo, ValidationError
 from .models import User
@@ -12,8 +13,7 @@ class Register(FlaskForm):
         user = User.query.filter_by(username = 'Admin').first()
 
         if user:
-            print('validation error raised')
-            raise ValidationError('An admin password has already been set')
+            raise ValidationError('active_password')
 
 class Login(FlaskForm):
     password = PasswordField('Password', validators = [DataRequired()])

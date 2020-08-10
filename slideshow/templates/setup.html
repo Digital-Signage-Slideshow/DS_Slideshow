@@ -27,8 +27,6 @@
 
 		<!-- SIDEBAR -->
 		<div class = 'w3-sidebar w3-light-grey w3-bar-block' style = 'width: 25%;'>
-			<h4 class = 'w3-bar-item'><b><a href = '{{ url_for("core.logout") }}' style = 'text-decoration: none; color: inherit'>LOGOUT</a></b></h4>
-
 				<div style = 'width: 20vw;' class = 'w3-bar-item'>
 					<form type = 'file' method = 'POST' enctype = 'multipart/form-data' action = '/upload_file'>
 						<label class = 'w3-button w3-blue'>
@@ -60,6 +58,8 @@
 						<input type = 'submit' value = 'Change Speed' formmethod = 'POST' class = 'w3-btn w3-blue'>
 					</form>
 				</div>
+				<h4 class = 'w3-bar-item'><b><a href = '{{ url_for("core.logout") }}' style = 'text-decoration: none; color: inherit'>LOGOUT</a></b></h4>
+
 		</div>
 
 		<!-- PAGE CONTENT -->
@@ -98,7 +98,7 @@
 							<p id = '{{ loop.index }}' class = 'preview' onclick = 'showLinkPreview(this.id)'>Preview</p>
 	
 							<form action = '/remove_link' method = 'POST' style = 'height: 0; padding-left: 20px'>
-								<input type = 'hidden' name = 'linkID' value = '{{ link }}'>
+								<input type = 'hidden' name = 'linkID' value = '{{ link.path }}'>
 								<i class="far fa-trash-alt" style = 'color: red;'></i>
 							</form>
 						</div>

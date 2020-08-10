@@ -106,31 +106,35 @@ def setup():
 @bp.route('/')
 def slideshow():
     images = os.listdir(upload_folder)
+    links = db.session.query(Content).filter(Content.type == 'link')
 
     return render_template(
         'index.html',
-        images=images,
-        # links=[i[0] for i in get_links()],
-        rotation_speed=rotation_speed
+        images = images,
+        links = [link.path for link in links],
+        rotation_speed = rotation_speed,
     )
 
 @bp.route('/register', methods = ['GET', 'POST'])
 def register():
+    print('function called')
     form = Register()
 
     if current_user.is_authenticated:
+        print('user already logged in')
         return redirect(url_for('core.setup'))
 
     if form.validate_on_submit():
+        print('form valid')
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
 
         user = User(username = 'Admin', password = hashed_password) # may allow multiple users in future  
         db.session.add(user)
         db.session.commit()
 
-        print('admin password set')
-        flash('admin password set') # currently not implemented
         return redirect(url_for('core.login'))
+    elif form.errors.get('password') == ['active_password']:
+        flash('there is already an active admin password set, please <a href = "/login">login</a> instead')
 
     return render_template('register.html', form = form)
 
