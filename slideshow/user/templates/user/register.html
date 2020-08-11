@@ -13,19 +13,19 @@
     <body>
         <div style = 'margin-top: 10%;'>
             <div class="w3-content w3-card-4 w3-animate-zoom w3-center" style="max-width:600px">
-    
+
                 <form class='w3-container' action = '/register' method = 'POST'>
                     <div class="w3-section">
                         {{ form.csrf_token }}
                         <h1>Add Password</h1>
                         <p class = 'w3-justify w3-center'>
-                            In order to keep your slideshow safe from other users you must set a password. 
+                            In order to keep your slideshow safe from other users you must set a password.
                             You will be prompted with a login screen whenever you enter the setup page
                         </p>
                         {{ form.password(class = 'w3-input w3-border', placeholder = 'Enter Password') }}
                         <br>
                         {{ form.confirm_password(class = 'w3-input w3-border', placeholder = 'Confirm')}}
-                        
+
                         {% with messages = get_flashed_messages() %}
                             {% if messages%}
                                 {% for message in messages%}
@@ -37,11 +37,11 @@
                         {{ form.submit(class = 'w3-button w3-block w3-green w3-section w3-padding') }}
                     </div>
                 </form>
-            
+
                 <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
                     <span class="w3-right w3-padding w3-hide-small">Already set a password? <a href="/login">Login</a></span>
                 </div>
-        
+
             </div>
         </div>
     </body>

@@ -7,10 +7,10 @@ from sqlalchemy.orm import sessionmaker
 db = SQLAlchemy()
 migrate = Migrate()
 
-Session = sessionmaker(bind = db)
+Session = sessionmaker(bind=db)
 session = Session()
 
 login_manager = LoginManager()
-login_manager.login_view = 'core.login'
+login_manager.login_view = 'user.login'
 
 bcrypt = Bcrypt()

@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat'>
+
+        <style>
+			body, h1, h2, h3, h4, b p {
+				font-family: 'Montserrat', sans-serif;
+			}
+        </style>
+    </head>
+
+    <body>
+        <div style = 'margin-top: 10%;'>
+            <div class="w3-content w3-card-4 w3-animate-zoom w3-center" style="max-width:600px">
+
+                <form class='w3-container' action = '{{ url_for('user.login') }}' method = 'POST'>
+                    <div class="w3-section">
+                        <label><h1>Slideshow Login</h1></label>
+                        {{ form.csrf_token }}
+                        {{ form.password(class = 'w3-input w3-border', placeholder = 'Enter Password') }}
+                        {% with messages = get_flashed_messages() %}
+                            {% if messages%}
+                                {% for message in messages%}
+                                    <p class = 'w3-text-red' style = 'text-align: left'>your login was incorrect, please check your password</p>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                        {{ form.submit(class = 'w3-button w3-block w3-green w3-section w3-padding') }}
+                        {{ form.remember(class = 'w3-check w3-margin-top')}} Remember Me
+                    </div>
+                </form>
+
+                <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+                    <a href = '/' class="w3-button w3-red">Cancel</a>
+                    <span class="w3-right w3-padding w3-hide-small">Forgot <a href="#">password?</a></span>
+                </div>
+
+            </div>
+        </div>
+    </body>
+</html>

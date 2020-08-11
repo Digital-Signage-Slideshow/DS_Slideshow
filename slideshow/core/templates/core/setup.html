@@ -39,10 +39,10 @@
 						<input type = 'submit' class = 'w3-button w3-blue' value = 'Upload' formmethod = 'POST'>
 					</form>
 				</div>
-	
+
 				<div style = 'width: 20vw' class = 'w3-bar-item'>
 					<form action = '/upload_link' method = 'POST'>
-						<p>								
+						<p>
 							<h4><b>Link</b></h4>
 							<p>Please enter the entire path to the page. e.g. https://google.co.uk. Note some pages will not work with this software.</p>
 							<input type = 'text' id = 'upload_link' name = 'upload_link' class = 'w3-input w3-border' autocomplete = 'off' placeholder = 'Enter link' required>
@@ -63,30 +63,30 @@
 					</form>
 				</div>
 
-				<h4 class = 'w3-bar-item'><b><a href = '{{ url_for("core.logout") }}' class = 'w3-button w3-red' style = 'position: absolute; bottom: 10;'>LOGOUT</a></b></h4>
+				<h4 class = 'w3-bar-item'><b><a href = '{{ url_for("user.logout") }}' class = 'w3-button w3-red' style = 'position: absolute; bottom: 10;'>LOGOUT</a></b></h4>
 		</div>
 
 		<!-- PAGE CONTENT -->
 		<div class = 'w3-content w3-main w3-padding' style = 'text-align: left; margin-left: 26%;'>
 			<h1>SLIDES</h1>
 			<div class = 'previewDiv' id = 'previewDiv'></div>
-	
+
 			<div>
 				{% if not images and not links%}
 					<div>
 						<p>No Content to display - To add content, use the controls at the bottom.</p>
 					</div>
 				{% endif %}
-	
-	
+
+
 				{% for image in images %}
 					<form action = '/remove_image' method = 'POST' class = 'w3-block' style = 'display: flex; justify-content: space-between; border-bottom: 1px solid lightgrey; align-items: center;'>
-						<p style = 'display: inline;'>{{ image }}</p>	
+						<p style = 'display: inline;'>{{ image }}</p>
 						<input type = 'hidden' name = 'image_id' id = 'image_id' value = '{{ image }}'>
 						<button class="far fa-trash-alt w3-button" style = 'color: red; display: inline;' type = 'submit' value = 'items_submitted' name = 'submit' id = 'submit'></button>
 					</form>
 				{% endfor %}
-	
+
 				{% for link in links %}
 					<!-- <div class = 'w3-container'> -->
 					<form action = '/remove_link' method = 'POST' class = 'w3-block' style = 'display: flex; justify-content: space-between; border-bottom: 1px solid lightgrey; align-items: center;'>
@@ -98,7 +98,7 @@
 			</div>
 		</div>
 	</body>
-	
+
 	<script>
 		var imagePreview = document.createElement('img');
 		var linkPreview = document.createElement('iframe');

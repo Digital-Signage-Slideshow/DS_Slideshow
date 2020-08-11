@@ -9,7 +9,7 @@
 
 {% if not links and not images %}
 	<div class = 'notFound'>
-		<p>No Content to Display <br>To add content go to /setup or <a href = '/setup'>click here</a></p>
+		<p>No Content to Display <br>To add content go to /setup or <a href = '{{ url_for("core.setup") }}'>click here</a></p>
 	</div>
 {% endif %}
 
@@ -49,7 +49,7 @@ function carousel() {
 	for (i = 0; i < x.length; i++) {
 		x[i].style.display = 'none';
 	}
-	
+
 	slideIndex++;
 	if (slideIndex > x.length) {slideIndex = 1; location.reload();}
 
