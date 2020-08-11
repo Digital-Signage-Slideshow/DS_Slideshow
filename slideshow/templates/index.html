@@ -7,13 +7,13 @@
 
 <body style = 'margin: 0; padding: 0'>
 
-{% if not links and not images %}
+{% if not links and not images and not videos %}
 	<div class = 'notFound'>
 		<p>No Content to Display <br>To add content go to /setup or <a href = '/setup'>click here</a></p>
 	</div>
 {% endif %}
 
-{% if links or images %}
+{% if links or images or videos %}
 	<div class = 'slideshowDiv'>
 		{% for image in images %}
 			<img class = 'slideshowContent' src = '{{ url_for('static', filename = 'images/slideshow_images/' + image) }}'>
@@ -22,6 +22,12 @@
 		{% for link in links %}
 			<iframe src = '{{ link }}' class = 'slideshowContent'></iframe>
 		{% endfor %}
+
+		{% for video in videos %}
+			<video class = 'slideshowContent'>
+				<source src = '{{ url_for('static', filename = 'images/slideshow_videos/' + video) }}' type = 'video/mp4'>
+			</video>
+		{% endfor %}
 	</div>
 {% endif %}
 
@@ -29,10 +35,19 @@
 
 <script>
 var slideIndex = 0;
-var links = {{ links | safe}}
-var images = {{ images | safe }}
+{% if links %}
+	var links = {{ links | safe}}
+{% endif %}
 
-if (images.length > 0 || links.length > 0){
+{% if images %}
+	var images = {{ images | safe }}
+{% endif %}
+
+{% if videos %}
+	var videos = {{ videos | safe }}
+{% endif %}
+
+if (images.length > 0 || links.length > 0 || videos.length > 0){
 	carousel();
 }
 else {
@@ -46,14 +61,24 @@ function refreshPage() {
 function carousel() {
 	var i;
 	var x = document.getElementsByClassName('slideshowContent');
+	
 	for (i = 0; i < x.length; i++) {
 		x[i].style.display = 'none';
+	
+		if (x[i].nodeName == 'VIDEO') {
+			x.pause();
+		}
 	}
 	
 	slideIndex++;
 	if (slideIndex > x.length) {slideIndex = 1; location.reload();}
 
 	x[slideIndex - 1].style.display = 'block';
+	
+	if (x[slideIndex - 1].nodeName == "VIDEO") {
+		x.play();
+	}
+
 	setTimeout(carousel, {{ rotation_speed }});
 }
 </script>

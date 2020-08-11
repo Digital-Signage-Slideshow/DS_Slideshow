@@ -9,14 +9,14 @@ from .forms import Register, Login
 from .models import User, Content
 
 rotation_speed = 10000  # in miliseconds
-upload_folder = f'{os.path.dirname(__file__)}/static/images/slideshow_images'
+image_folder = f'{os.path.dirname(__file__)}/static/images/slideshow_images'
+video_folder = f'{os.path.dirname(__file__)}/static/images/slideshow_videos'
 allowed_extensions = ['png', 'jpg', 'jpeg']
 
-bp = Blueprint('core', __name__, template_folder='templates')
+bp = Blueprint('core', __name__, template_folder = 'templates')
 
 def allowed_files(filename):
-    return lambda f: '.' in filename and filename.rsplit('.', 1)[
-        1].lower() in allowed_extensions
+    return lambda f: '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
 @bp.errorhandler(500)
 def custom_500(error: dict):
@@ -27,7 +27,7 @@ def remove_image():
     if request.method == 'POST':
         filename = request.form.get('image_id')
 
-        os.remove(f'{upload_folder}/{filename}')
+        os.remove(f'{image_folder}/{filename}')
         Content.query.filter_by(type='file', path = filename).delete()
         db.session.commit()
 
@@ -46,8 +46,7 @@ def alter_rotation_speed():
     global rotation_speed
 
     try:
-        rotation_speed = float(
-            request.form.to_dict()['alter_rotation_speed']) * 1000
+        rotation_speed = float(request.form.to_dict()['alter_rotation_speed']) * 1000
     except Exception as e:
         flash('Please enter a number')
 
@@ -62,9 +61,9 @@ def upload_file():
             return redirect(url_for('core.setup'))
         if file and allowed_files(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(upload_folder, filename))
+            file.save(os.path.join(image_folder, filename))
 
-            new_file = Content(type='file', path=filename)
+            new_file = Content(type = 'file', path = filename)
             db.session.add(new_file)
             db.session.commit()
     else:
@@ -76,7 +75,7 @@ def upload_file():
 def upload_link():
     if request.method == 'POST':
         path = request.form.to_dict()['upload_link']
-        new_link = Content(type='link', path=path)
+        new_link = Content(type = 'link', path = path)
         db.session.add(new_link)
         db.session.commit()
     else:
@@ -89,25 +88,29 @@ def upload_link():
 def setup():
     global rotation_speed
 
-    images = os.listdir(upload_folder)
+    images = os.listdir(image_folder)
+    videos = os.listdir(video_folder)
     links = db.session.query(Content).filter(Content.type == 'link')
 
     return render_template(
         'setup.html',
         images = images,
         links = links,
+        videos = videos,
         rotation_speed = rotation_speed // 1000
     )
 
 @bp.route('/')
 def slideshow():
-    images = os.listdir(upload_folder)
+    images = os.listdir(image_folder)
+    videos = os.listdir(video_folder)
     links = db.session.query(Content).filter(Content.type == 'link')
 
     return render_template(
         'index.html',
         images = images,
         links = [link.path for link in links],
+        videos = videos,
         rotation_speed = rotation_speed,
     )
 

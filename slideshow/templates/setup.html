@@ -88,10 +88,17 @@
 				{% endfor %}
 	
 				{% for link in links %}
-					<!-- <div class = 'w3-container'> -->
 					<form action = '/remove_link' method = 'POST' class = 'w3-block' style = 'display: flex; justify-content: space-between; border-bottom: 1px solid lightgrey; align-items: center;'>
 						<p style = 'color: darkblue; display: inline;'>{{ link.path }}</p>
 						<input type = 'hidden' name = 'link' id = 'image' value = '{{ link.path }}'>
+						<button class="far fa-trash-alt w3-button" style = 'color: red; display: inline;' type = 'submit' value = 'items_submitted' name = 'submit' id = 'submit'></button>
+					</form>
+				{% endfor %}
+
+				{% for video in videos %}
+					<form action = '/remove_video' method = 'POST' class = 'w3-block' style = 'display: flex; justify-content: space-between; border-bottom: 1px solid lightgrey; align-items: center;'>
+						<p style = 'display: inline;'>{{ video }}</p>	
+						<input type = 'hidden' name = 'video_id' id = 'video_id' value = '{{ video }}'>
 						<button class="far fa-trash-alt w3-button" style = 'color: red; display: inline;' type = 'submit' value = 'items_submitted' name = 'submit' id = 'submit'></button>
 					</form>
 				{% endfor %}
@@ -99,7 +106,7 @@
 		</div>
 	</body>
 	
-	<script>
+	<!-- <script>
 		var imagePreview = document.createElement('img');
 		var linkPreview = document.createElement('iframe');
 
@@ -123,6 +130,6 @@
 
 			document.getElementById('previewDiv').appendChild(linkPreview)
 		}
-	</script>
+	</script> -->
 
 </html>
