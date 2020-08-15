@@ -16,7 +16,7 @@
 {% if links or images or videos %}
 	<div class = 'slideshowDiv'>
 		{% for image in images %}
-			<img class = 'slideshowContent' src = '{{ url_for('static', filename = 'images/slideshow_images/' + image) }}'>
+			<img class = 'slideshowContent' src = '{{ url_for('static', filename = 'images/' + image) }}'>
 		{% endfor %}
 
 		{% for link in links %}
@@ -25,7 +25,7 @@
 
 		{% for video in videos %}
 			<video class = 'slideshowContent'>
-				<source src = '{{ url_for('static', filename = 'images/slideshow_videos/' + video) }}' type = 'video/mp4'>
+				<source src = '{{ url_for('static', filename = 'videos/' + video) }}' type = 'video/mp4'>
 			</video>
 		{% endfor %}
 	</div>
@@ -37,10 +37,14 @@
 var slideIndex = 0;
 {% if links %}
 	var links = {{ links | safe}}
+{% else %}
+	var links = []
 {% endif %}
 
 {% if images %}
 	var images = {{ images | safe }}
+{% else %}
+	var images = []
 {% endif %}
 
 {% if videos %}
@@ -61,22 +65,24 @@ function refreshPage() {
 function carousel() {
 	var i;
 	var x = document.getElementsByClassName('slideshowContent');
-	
+
 	for (i = 0; i < x.length; i++) {
 		x[i].style.display = 'none';
 	
 		if (x[i].nodeName == 'VIDEO') {
-			x.pause();
+			x[i].pause();
 		}
 	}
-	
+
 	slideIndex++;
-	if (slideIndex > x.length) {slideIndex = 1; location.reload();}
+	if (slideIndex > x.length) {
+		slideIndex = 1; location.reload();
+	}
 
 	x[slideIndex - 1].style.display = 'block';
 	
 	if (x[slideIndex - 1].nodeName == "VIDEO") {
-		x.play();
+		x[slideIndex - 1].play();
 	}
 
 	setTimeout(carousel, {{ rotation_speed }});

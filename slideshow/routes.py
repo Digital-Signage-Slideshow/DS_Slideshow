@@ -9,8 +9,8 @@ from .forms import Register, Login
 from .models import User, Content
 
 rotation_speed = 10000  # in miliseconds
-image_folder = f'{os.path.dirname(__file__)}/static/images/slideshow_images'
-video_folder = f'{os.path.dirname(__file__)}/static/images/slideshow_videos'
+image_folder = f'{os.path.dirname(__file__)}/static/images'
+video_folder = f'{os.path.dirname(__file__)}/static/videos'
 allowed_extensions = ['png', 'jpg', 'jpeg']
 
 bp = Blueprint('core', __name__, template_folder = 'templates')
@@ -28,6 +28,17 @@ def remove_image():
         filename = request.form.get('image_id')
 
         os.remove(f'{image_folder}/{filename}')
+        Content.query.filter_by(type='file', path = filename).delete()
+        db.session.commit()
+
+    return redirect(url_for('core.setup'))
+
+@bp.route('/remove_video', methods=['GET', 'POST'])
+def remove_video():
+    if request.method == 'POST':
+        filename = request.form.get('image_id')
+
+        os.remove(f'{video_folder}/{filename}')
         Content.query.filter_by(type='file', path = filename).delete()
         db.session.commit()
 
