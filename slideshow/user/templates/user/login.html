@@ -19,15 +19,17 @@
                     <label><h1>Slideshow Login</h1></label>
                     {{ form.csrf_token }}
                     {{ form.password(class = 'w3-input w3-border', placeholder = 'Enter Password') }}
+                    
                     {% with messages = get_flashed_messages() %}
                         {% if messages %}
                             {% for message in messages %}
-                                <p class='w3-text-red' style='text-align: left'>your login was incorrect, please check
-                                    your
-                                    password</p>
+                                <p class='w3-text-red' style='text-align: left'>
+                                    your login was incorrect, please check your password
+                                </p>
                             {% endfor %}
                         {% endif %}
                     {% endwith %}
+                    
                     {{ form.submit(class = 'w3-button w3-block w3-green w3-section w3-padding') }}
                     {{ form.remember(class = 'w3-check w3-margin-top') }} Remember Me
                 </div>
