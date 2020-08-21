@@ -95,13 +95,16 @@ def upload_link():
 def setup():
     global rotation_speed
 
-    images = os.listdir(upload_folder)
-    links = db.session.query(Content).filter(Content.type == 'link')
+    contents = Content.query.all()
+
+    # images = os.listdir(upload_folder)
+    # links = db.session.query(Content).filter(Content.type == 'link')
 
     return render_template(
         'core/setup.html',
-        images=images,
-        links=links,
+        contents=contents,
+        # images=images,
+        # links=links,
         rotation_speed=rotation_speed // 1000
     )
 
