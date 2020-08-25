@@ -1,0 +1,45 @@
+<div class='w3-sidebar w3-light-grey w3-bar-block' style='width: 25%;'>
+        <h1 class='w3-bar-item'>SETUP</h1>
+        <div style='width: 20vw;' class='w3-bar-item'>
+            <h4><b>Upload Images</b></h4>
+            <p>Supported formats: .png .jpg .jpeg</p>
+            <form type='file' method='POST' enctype='multipart/form-data' action='{{ url_for('core.upload_file') }}'>
+                <label class='w3-button w3-blue'>
+                    <span>Choose File <i class='fas fa-image'></i></span>
+                    <input name='file' type='file' style='display: none' required>
+                </label>
+
+                <input type='submit' class='w3-button w3-blue' value='Upload' formmethod='POST'>
+            </form>
+        </div>
+
+        <div style='width: 20vw' class='w3-bar-item'>
+            <form action='{{ url_for('core.upload_link') }}' method='POST'>
+                <p>
+                <h4><b>Link</b></h4>
+                <p>Please enter the entire path to the page. e.g. https://google.co.uk. Note some pages will not work
+                    with
+                    this software.</p>
+                <input type='text' id='upload_link' name='upload_link' class='w3-input w3-border' autocomplete='off'
+                       placeholder='Enter link' required>
+                </p>
+                <input type='submit' value='Add Link' formmethod='POST' class='w3-button w3-blue'>
+            </form>
+        </div>
+
+        <div style='width: 20vw;' class='w3-bar-item'>
+            <form action='{{ url_for('core.alter_rotation_speed') }}' method='POST'>
+                <p>
+                <h4><b>Slideshow Speed</b></h4>
+                <p>Current Speed {{ rotation_speed | round | int }} seconds</p>
+                <p>
+                    <input type='text' id='alter_rotation_speed' name='alter_rotation_speed' class='w3-input w3-border'
+                           autocomplete='off' placeholder='Speed (s)' required/>
+                </p>
+
+                <input type='submit' value='Change Speed' formmethod='POST' class='w3-button w3-blue'>
+            </form>
+        </div>
+
+        <h4 class='w3-bar-item'><b><a href='{{ url_for("user.logout") }}' class='w3-button w3-red' style='position: relative; bottom: 10;'>LOGOUT</a></b></h4>
+    </div>
