@@ -1,10 +1,21 @@
+from os import mkdir
+from os.path import exists, abspath, dirname
 from flask import Flask
 
 from .extensions import db, migrate, bcrypt, login_manager
 
 
+def create_default_folders():
+    current_dir = dirname(abspath(__file__))
+
+    for folder in ('slideshow_images', 'slideshow_videos'):
+        if not exists(f'{current_dir}/static/images/{folder}'):
+            mkdir(f'{current_dir}/static/images/{folder}')
+
 def create_app():
     app = Flask(__name__)
+
+    create_default_folders()
 
     app.config.from_object('config.DevelopmentConfig')
  
