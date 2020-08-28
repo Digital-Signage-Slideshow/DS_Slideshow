@@ -34,7 +34,7 @@
                     <div class="w3-col m3">
                         <div class="w3-card">
                             <img src="{{ url_for('static', filename='images/slideshow_images/') }}{{ content.path }}"
-                                 alt="{{ content.path }}" style="width:100%">
+                                 alt="{{ content.path }}" style="width:100%; height: 25vh; object-fit: cover;">
                             <div>
                                 <form action="{{ url_for('core.remove_image') }}" method="POST" class='w3-block'>
                                     <input type='hidden' name='image_id' id='image_id' value='{{ content.path }}'>
@@ -51,14 +51,15 @@
                 {% for content in contents if 'link' in content['type'] %}
                     <div class="w3-col m3">
                         <div class="w3-card">
-                            <iframe src="{{ content.path }}" frameborder="0" width="100%"></iframe>
+                            <iframe src="{{ content.path }}" frameborder="0" width="100%" style = 'height: 25vh;'></iframe>
                             <div>
                                 <form action="{{ url_for('core.remove_link') }}" method="POST" class="w3-block">
                                     <input type='hidden' name='link' id='image' value='{{ content.path }}'>
                                     <button class="far fa-trash-alt w3-button w3-block"
                                             style='color: red; display: inline;'
                                             type='submit'
-                                            value='items_submitted' name='submit' id='submit'></button>
+                                            value='items_submitted' name='submit' id='submit'>
+                                    </button>
                                 </form>
                             </div>
                         </div>
@@ -69,34 +70,4 @@
             <p>No Content to display - To add content, use the controls at the left.</p>
         {% endif %}
     </div>
-{% endblock %}
-
-{% block scripts %}
-    <script>
-        var imagePreview = document.createElement('img');
-        var linkPreview = document.createElement('iframe');
-
-        var images = {{ images | safe }};
-
-        function showImagePreview(index) {
-            document.getElementById('previewDiv').innerHTML = '';
-
-            imagePreview.src = ('/static/images/slideshow_images/' + images[index - 1])
-            imagePreview.className = ('previewImage')
-
-
-            document.getElementById('previewDiv').appendChild(imagePreview)
-        }
-
-        var links = {{ links | safe }};
-
-        function showLinkPreview(index) {
-            document.getElementById('previewDiv').innerHTML = '';
-
-            linkPreview.src = (links[index - 1])
-            linkPreview.className = ('previewLink')
-
-            document.getElementById('previewDiv').appendChild(linkPreview)
-        }
-    </script>
 {% endblock %}

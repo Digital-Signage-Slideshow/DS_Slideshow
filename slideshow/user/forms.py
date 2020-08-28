@@ -5,10 +5,16 @@ from .models import User
 
 
 class RegisterForm(FlaskForm):
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password',
-                                     validators=[DataRequired(),
-                                                 EqualTo('password')])
+    password = PasswordField(
+        'Password', 
+        validators=[DataRequired()]
+    )
+    
+    confirm_password = PasswordField(
+        'Confirm Password',
+        validators=[DataRequired(), EqualTo('password')]
+    )
+
     submit = SubmitField('Add Password')
 
     # TODO: move all validator to validators file
