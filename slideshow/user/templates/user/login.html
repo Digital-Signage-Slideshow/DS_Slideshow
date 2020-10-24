@@ -4,42 +4,68 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat'>
     <style>
-        body, h1, h2, h3, h4, b p {
-            font-family: 'Montserrat', sans-serif;
+        html,
+        body {
+          height: 100%;
+        }
+        
+        body {
+          display: -ms-flexbox;
+          display: -webkit-box;
+          display: flex;
+          -ms-flex-align: center;
+          -ms-flex-pack: center;
+          -webkit-box-align: center;
+          align-items: center;
+          -webkit-box-pack: center;
+          justify-content: center;
+          padding-top: 40px;
+          padding-bottom: 40px;
+          background-color: #f5f5f5;
+        }
+
+        .form-signin .checkbox {
+            font-weight: 400;
+        }
+
+        .form-signin {
+            width: 100%;
+            padding: 15px;
+            margin: 0 auto;
         }
     </style>
 {% endblock %}
 
 {% block content %}
-    <div style='margin-top: 10%;'>
-        <div class="w3-content w3-card-4 w3-animate-zoom w3-center" style="max-width:600px">
 
-            <form class='w3-container' action='{{ url_for('user.login') }}' method='POST'>
-                <div class="w3-section">
-                    <label><h1>Slideshow Login</h1></label>
+    <body class="text-center">
+        <div class="card" style = 'width: 18vw;'>
+            <article class="card-body">
+                <h3 class="card-title text-center mb-4 mt-1">Please sign in</h3>
+                <hr>
+                <form action='{{ url_for('user.login') }}' method='POST'>
                     {{ form.csrf_token }}
-                    {{ form.password(class = 'w3-input w3-border', placeholder = 'Enter Password') }}
                     
                     {% with messages = get_flashed_messages() %}
                         {% if messages %}
                             {% for message in messages %}
-                                <p class='w3-text-red' style='text-align: left'>
-                                    your login was incorrect, please check your password
-                                </p>
+                                <div class = 'alert alert-danger'>
+                                    Password Incorrect
+                                </div>
                             {% endfor %}
                         {% endif %}
                     {% endwith %}
+
+                    {{ form.password(class = 'form-control', placeholder = 'Enter Password') }}
                     
-                    {{ form.submit(class = 'w3-button w3-block w3-green w3-section w3-padding') }}
-                    {{ form.remember(class = 'w3-check w3-margin-top') }} Remember Me
+                    <div class="form-group text-left mt-2">
+                    <label>
+                        {{ form.remember(class = 'checkbox') }} Remember Password
+                    </label>
+                    {{ form.submit(class = 'form-signin btn btn-lg btn-primary btn-block mt-5') }}
                 </div>
-            </form>
-
-            <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
-                <a href='/' class="w3-button w3-red">Cancel</a>
-                <span class="w3-right w3-padding w3-hide-small">Forgot <a href="#">password?</a></span>
+                </form>
+            </article>
             </div>
-
-        </div>
-    </div>
+    </body>
 {% endblock %}

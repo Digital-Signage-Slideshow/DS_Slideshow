@@ -6,11 +6,12 @@
 
 {% block content %}
     {% if not links and not images %}
-        <div class='notFound'>
-            <p>No Content to Display <br>To add content go to /setup or <a href='{{ url_for("core.setup") }}'>click
-                here</a>
-            </p>
+    <body class = 'not_found'>
+        <div class = 'text-center'>
+            <h2>No Content to Display</h2>
+            <p>Please <a href='{{ url_for("core.setup") }}'>click here</a> to add content.</p>
         </div>
+    </body>
     {% endif %}
 
     {% if links or images %}

@@ -60,8 +60,8 @@ def alter_rotation_speed():
 @bp.route('/upload_file', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
-        file = request.files['file']
-        # priority =
+        file = request.files.get('file')
+
         if 'file' not in request.files:
             return redirect(url_for('core.setup'))
         if file and allowed_files(file.filename):
