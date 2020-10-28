@@ -14,8 +14,7 @@ rotation_speed = 10000  # in miliseconds
 
 
 def allowed_files(filename):
-    return lambda f: '.' in filename and filename.rsplit('.', 1)[
-        1].lower() in allowed_extensions
+    return lambda f: '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
 
 @bp.errorhandler(500)
@@ -102,7 +101,7 @@ def setup():
 
     return render_template(
         'core/setup.html',
-        contents=contents,
+        contents = contents,
         # images=images,
         # links=links,
         rotation_speed=rotation_speed // 1000

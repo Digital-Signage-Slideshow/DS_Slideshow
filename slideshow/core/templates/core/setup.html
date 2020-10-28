@@ -1,39 +1,40 @@
 {% extends 'layouts/base.html' %}
 
 {% block styles %}
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat'>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <script src="https://kit.fontawesome.com/e9818d9c7f.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <style>
-        .navbar {
-            min-height: 80px;
-        }
-          
-        .navbar-brand {
-            padding: 0 15px;
-            height: 80px;
-            line-height: 80px;
-        }
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat'>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script src="https://kit.fontawesome.com/e9818d9c7f.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<style>
+    .navbar {
+        min-height: 80px;
+    }
 
-        .footer {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 60px; /* Set the fixed height of the footer here */
-        }
+    .navbar-brand {
+        padding: 0 15px;
+        height: 80px;
+        line-height: 80px;
+    }
 
-        .btn.btn-primary[disabled] {
-            background-color: lightgrey;
-            border-color: lightgrey;
-        }
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 60px;
+        /* Set the fixed height of the footer here */
+    }
 
-    </style>
+    .btn.btn-primary[disabled] {
+        background-color: lightgrey;
+        border-color: lightgrey;
+    }
+</style>
 
 {% endblock %}
 
 {% block content %}
+
 <body>
 
     <header>
@@ -45,150 +46,161 @@
             </button>
             <div class="navbar-collapse collapse justify-content-stretch" id="navbar7">
                 <ul class="navbar-nav ml-auto">
-                    <li class = 'nav-item mr-3'>
-                        <a class = 'nav-link btn btn-secondary btn-md'><i class="fas fa-user-cog"></i> Settings</a>
+                    <li class='nav-item mr-3'>
+                        <a class='nav-link btn btn-secondary btn-md'><i class="fas fa-user-cog"></i> Settings</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-danger" href="{{ url_for('user.logout') }}"><i class="fas fa-sign-out-alt"></i> Sign out</a>
+                        <a class="nav-link btn btn-danger" href="{{ url_for('user.logout') }}"><i
+                                class="fas fa-sign-out-alt"></i> Sign out</a>
                     </li>
                 </ul>
             </div>
         </nav>
     </header>
-      
-    <main>
-            <div class = 'container'>
-                <!-- <button type = 'button' class = 'btn btn-success btn-md' data-toggle="modal" data-target="#myModal"><i class="fas fa-plus"></i> Upload Content</button> -->
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Upload Content</button>
 
-                <!-- Modal -->
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
+    <main>
+        <div class='container'>
+            <!-- <button type = 'button' class = 'btn btn-success btn-md' data-toggle="modal" data-target="#myModal"><i class="fas fa-plus"></i> Upload Content</button> -->
+
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                         <div class="modal-body">
 
-                            <div class = 'container form-group rounded'>
+                            <div class='container form-group rounded'>
                                 <form action='{{ url_for('core.upload_link') }}' method='POST'>
                                     <h3>Link</h3>
-                                    <p class = 'text-muted'>
-                                        Please enter the entire path to the page. e.g. https://google.co.uk. Note some pages will not work
+                                    <p class='text-muted'>
+                                        Please enter the entire path to the page. e.g. https://google.co.uk. Note some
+                                        pages will not work
                                         with this software.
                                     </p>
 
-                                    <div class = 'd-flex'>
-                                        <input type='text' id='upload_link' name='upload_link' class='form-control' autocomplete='off' placeholder='Enter link' required>
-                                        <input type='submit' value='Add Link' formmethod='POST' class='ml-4 btn btn-primary'>
+                                    <div class='d-flex'>
+                                        <input type='text' id='upload_link' name='upload_link' class='form-control'
+                                            autocomplete='off' placeholder='Enter link' required>
+                                        <input type='submit' value='Add Link' formmethod='POST'
+                                            class='ml-4 btn btn-primary'>
                                     </div>
                                 </form>
 
-                                <form type='file' method='POST' enctype='multipart/form-data' action="{{ url_for('core.upload_file') }}">
+                                <form type='file' method='POST' enctype='multipart/form-data'
+                                    action="{{ url_for('core.upload_file') }}">
                                     <h3>Image</h3>
-                                    <p class = 'text-muted'>Supported formats: .png .jpg .jpeg</p>
-                                    
+                                    <p class='text-muted'>Supported formats: .png .jpg .jpeg</p>
+
                                     <!-- Custom Bootstrap File Input -->
-                                    <div class = 'd-flex'>
+                                    <div class='d-flex'>
                                         <div class="custom-file">
-                                            
-                                            <input type="file" class="custom-file-input" id="file" name = 'file' required>
+
+                                            <input type="file" class="custom-file-input" id="file" name='file' required>
                                             <label class="custom-file-label" for="customFile">Choose file</label>
                                         </div>
-    
-                                        <input type = 'submit' value = 'Upload' formmethod = 'POST' class = 'ml-4 btn btn-primary'>
+
+                                        <input type='submit' value='Upload' formmethod='POST'
+                                            class='ml-4 btn btn-primary'>
                                     </div>
                                 </form>
 
-                                <form class = 'mt-5' action='{{ url_for('core.alter_rotation_speed') }}' method='POST'>
+                                <form class='mt-5' action='{{ url_for('core.alter_rotation_speed') }}' method='POST'>
                                     <h3>Slideshow Speed</h3>
-                                    <p class = 'text-muted'>Current Speed: {{ rotation_speed | round | int }} seconds</p>
+                                    <p class='text-muted'>Current Speed: {{ rotation_speed | round | int }} seconds</p>
 
-                                    <div class = 'd-flex'>
-                                        <input type='text' id='alter_rotation_speed' name='alter_rotation_speed' class='form-control'autocomplete='off' placeholder='Speed (s)' required/>
-                                        <input type='submit' value='Change Speed' formmethod='POST' class='ml-4 btn btn-primary'>
+                                    <div class='d-flex'>
+                                        <input type='text' id='alter_rotation_speed' name='alter_rotation_speed'
+                                            class='form-control' autocomplete='off' placeholder='Speed (s)' required />
+                                        <input type='submit' value='Change Speed' formmethod='POST'
+                                            class='ml-4 btn btn-primary'>
                                     </div>
                                 </form>
                             </div>
-                        
+
                         </div>
 
                         <div class="modal-footer mt-5">
                             <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
                         </div>
-                    
-                    </div>
+
                     </div>
                 </div>
-                {% if not contents %}
-                <div class = 'text-center mt-5'>
-                    <h1>No Content to Display</h1>
-                    <p>Click the "upload content" button to beign adding content</p>
+            </div>
+            {% if not contents %}
+            <div class='text-center mt-5'>
+                <h1>No Content to Display</h1>
+                <p class = 'text-muted'>Click below to begin adding content</p>
+                <button type="button" class="btn btn-primary ml-3" data-toggle="modal" data-target="#myModal">Upload Content</button>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if contents %}
+        <div class="album py-5 bg-light">
+            
+            <div class="container">
+                <button type="button" class="btn btn-primary ml-3" data-toggle="modal" data-target="#myModal">Upload Content</button>
+
+                <!-- Project Cards -->
+                <div class="album py-5 bg-light">
+                    <div class="container">
+
+                        <h2 class='jumbotron-heading'>Content</h2>
+                        <p class='text-muted'>Drag and drop slides to reorder the slideshow (not implemented yet)</p>
+                        <hr>
+
+                        <div class="row card-deck">
+                            {% for content in contents %}
+                            <div class="col-md-4 py-2">
+                                <div class="card mb-4 box-shadow h-100">
+                                    <img class="card-img-top"
+                                        src="{{ url_for('static', filename='images/slideshow_images/') }}{{ content.path }}"
+                                        alt="Card image cap" style='height: 50%; object-fit: cover'>
+                                    <div class="card-body">
+                                        <hr>
+                                        <p class="card-text text-muted">{{ content.path }}</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                <button type = 'button' class = 'btn btn-sm btn-outline-secondary'>Settings</button>
+                                                <button type = 'button' class="btn btn-sm btn-outline-secondary">Remove</button>
+                                            </div>
+                                            <p class = 'text-muted'>5s</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
                 {% endif %}
             </div>
 
-        {% if contents %}
-        <div class="album py-5 bg-light">
 
-        <div class="container">
-        {% for content in contents if 'file' in content['type'] %}
-            <!-- <div class="col-md-4">
-                <div class="card mb-4 box-shadow">
-                <img class="card-img-top" src="{{ url_for('static', filename='images/slideshow_images/') }}{{ content.path }}" alt="Content Preview">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Remove</button>
-                    </div>
-                    <small class="text-muted"><i class="fas fa-stopwatch"></i> 10s</small>
-                    </div>
-                </div>
-                </div>
-            </div> -->
-            <div class="row">
-                <div class="col-md-4">
-                  <div class="card mb-4 box-shadow">
-                    <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail" alt="Card image cap">
-                    <div class="card-body">
-                      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                      <div class="d-flex justify-content-between align-items-center">
-                        <div class="btn-group">
-                          <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                          <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                        </div>
-                        <small class="text-muted">9 mins</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-        {% endfor %}
-        </div>
-
-        {% endif %}
-        </div>
     </main>
-    
-    <footer class = 'footer'>
-        <div class = 'container text-center'>
-            <p class = 'text-muted'>Made with <i class="fas fa-heart text-danger"></i> by Harry Lees</p>
+
+    <footer class='footer'>
+        <div class='container text-center'>
+            <p class='text-muted'>Made with <i class="fas fa-heart text-danger"></i> by Harry Lees</p>
         </div>
     </footer>
 
-    </body>
+</body>
 
-    <script>
-        // Add the following code if you want the name of the file appear on select
-        $(".custom-file-input").on("change", function() {
-          var fileName = $(this).val().split("\\").pop();
-          $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-        });
-    </script>
+<script>
+    // Add the following code if you want the name of the file appear on select
+    $(".custom-file-input").on("change", function () {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+</script>
 
-    <!-- <div class='w3-content w3-main w3-padding' style='text-align: left; margin-left: 26%;'>
+<!-- <div class='w3-content w3-main w3-padding' style='text-align: left; margin-left: 26%;'>
         <h1>SLIDES</h1>
         <div class='previewDiv' id='previewDiv'></div>
         {% if contents %}
