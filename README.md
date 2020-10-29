@@ -1,8 +1,67 @@
 # Digital Signage Slideshow
 
+<!-- TABLE OF CONTENTS -->
+## Table of Contents
+
+* [About the Project](#about-the-project)
+  * [Built With](#built-with)
+* [Getting Started](#getting-started)
+  * [Flask Development Server](#flask-development-server)
+  * [Docker](#docker)
+* [Roadmap](#roadmap)
+ * [Upcoming Features](#upcoming-features)
+ * [Features in Discussion](#features-in-discussion)
+* [Images](#images)
+* [Contributing](#contributing)
+* [License](#license)
+
+## About the Project
+
+![Screenshot](https://github.com/Digital-Signage-Slideshow/DS_Slideshow/blob/bootstrap/.github/content_screenshot.PNG)
+
 DS Signage is a lightweight flask based Digital Signage system I designed for use on Raspberry Pi or similar. To get started, clone or fork this repo. For instructions on getting started, follow the usage steps below. For contributing guidelines, please see the contributing section near the end of the README.
 
-## Usage
+### Built With
+
+* Python3
+* Flask
+* Bootstrap
+* Font Awesome
+
+See our dependancies for more details on the depencies of this project.
+
+## Getting Started
+
+### Flask Development Server
+
+This method is not recommended over the Docker hosting for any reason unless developing. Flask's inbuilt development server is not designed for use in a production environment.
+
+To launch the Flask developement server, you should navigate to the DS-Slideshow directory (shown below).
+
+```bash
+> ls
+migrations  slideshow display static  templates user  config.py docker-compose.yml  Dockerfile  README.md requirements.txt  wsgi.py
+```
+
+and execute the following commands. The environment variables are stored in the .flaskenv file and will be automatically loaded. It is also recommended to launch this application in a Python virtual environment. (venv is not included in the requirements.txt and will need to be manually configured)
+
+```
+> python3 -m pip install -r requirements.txt
+...
+> flask run
+
+ * Serving Flask app "wsgi" (lazy loading)
+ * Environment: development
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://0.0.0.0:5001/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: xxx-xxx-xxx
+```
+
+opening 127.0.0.1:5001/setup on the host machine will launch into the configuration screen.
 
 ### Docker
 
@@ -36,44 +95,34 @@ to halt the running of the program you can simply navigate to the DS-Slideshow d
 docker-compose down
 ```
 
-### Flask Development Server
+## Roadmap
 
-This method is not recommended over the Docker hosting for any reason unless developing. Flask's inbuilt development server is not designed for use in a production environment.
+### Upcoming Features
 
-To launch the Flask developement server, you should navigate to the DS-Slideshow directory (shown below).
+These are the features that are being actively considered/ worked on. 
 
-```bash
-> ls
-migrations  slideshow display static  templates user  config.py docker-compose.yml  Dockerfile  README.md requirements.txt  wsgi.py
-```
+* Video/ Gif support. There is an open branch for this feature! I am currently fine-tuning the behaviour.
+* Rearranging the position of links/ images uploaded. Currently, there is no way of rearranging the order of your slides. This is a feature I am working on!
 
-and execute the following commands. The environment variables are stored in the .flaskenv file and will be automatically loaded. It is also recommended to launch this application in a Python virtual environment. (venv is not included in the requirements.txt and will need to be manually configured)
+### Features in Discussion
 
-```
-> python3 -m pip install -r requirements.txt
-...
-> flask run
+These features are much further down the line. There isn't even an issue open for most of these. If you would like to try and take on one of these, please feel free to fork the repo!
 
- * Serving Flask app "wsgi" (lazy loading)
- * Environment: development
-   WARNING: Do not use the development server in a production environment.
-   Use a production WSGI server instead.
- * Debug mode: on
- * Running on http://0.0.0.0:5001/ (Press CTRL+C to quit)
- * Restarting with stat
- * Debugger is active!
- * Debugger PIN: xxx-xxx-xxx
-```
+* Multiple user accounts.
+* Different content for different screens.
+* Landing Page different to slideshow page.
 
-opening 127.0.0.1:5001/setup on the host machine will launch into the configuration screen.
+## Images
+
+A collection of screenshots from our gallery.
+
+![content](https://github.com/Digital-Signage-Slideshow/DS_Slideshow/blob/bootstrap/.github/content_screenshot.PNG)
+![no-content](https://github.com/Digital-Signage-Slideshow/DS_Slideshow/blob/bootstrap/.github/no_content_screenshot.PNG)
+![upload-content](https://github.com/Digital-Signage-Slideshow/DS_Slideshow/blob/bootstrap/.github/upload_content_screenshot.PNG)
+![login](https://github.com/Digital-Signage-Slideshow/DS_Slideshow/blob/bootstrap/.github/login_screenshot.PNG)
 
 ## Contributing
 This is an open source project written almost entirely in Python3. If you would like to contribute, please feel free to create a merge request or issue to discuss changes.
-
-## Upcoming features
-
-- Video/ Gif support. There is an open branch for this feature! I am currently fine-tuning the behaviour.
-- Rearranging the position of links/ images uploaded. Currently, there is no way of rearranging the order of your slides. This is a feature I am working on!
 
 ## License
 This code is available under the [MIT](https://choosealicense.com/licenses/mit/) licence

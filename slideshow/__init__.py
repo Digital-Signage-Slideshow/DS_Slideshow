@@ -3,7 +3,7 @@ from os.path import exists, abspath, dirname
 from flask import Flask
 
 from .extensions import db, migrate, bcrypt, login_manager
-
+from slideshow.user.models import User
 
 def create_default_folders():
     current_dir = dirname(abspath(__file__))
@@ -11,6 +11,20 @@ def create_default_folders():
     for folder in ('slideshow_images', 'slideshow_videos'):
         if not exists(f'{current_dir}/static/images/{folder}'):
             mkdir(f'{current_dir}/static/images/{folder}')
+
+
+def init_default_login():
+    accounts = User.query.all()
+
+    if not accounts:
+        # generate the default password hash
+        default_password = 'password'
+        hashed_password = bcrypt.generate_password_hash(default_password).decode('utf-8')
+
+        default_account = User(id = 1, username = 'default', password = hashed_password)
+        db.session.add(default_account)
+        db.session.commit()
+
 
 def create_app():
     app = Flask(__name__)
@@ -29,6 +43,7 @@ def create_app():
 
     with app.app_context():
         db.create_all()
+        init_default_login()
 
     return app
 
