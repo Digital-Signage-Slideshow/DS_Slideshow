@@ -2,10 +2,13 @@
 
 {% block styles %}
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat'>
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <script src="https://kit.fontawesome.com/e9818d9c7f.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf" crossorigin="anonymous"></script>
+
 <style>
     .navbar {
         min-height: 80px;
@@ -47,7 +50,7 @@
             <div class="navbar-collapse collapse justify-content-stretch" id="navbar7">
                 <ul class="navbar-nav ml-auto">
                     <li class='nav-item mr-3'>
-                        <a class='nav-link btn btn-secondary btn-md'><i class="fas fa-user-cog"></i> Settings</a>
+                        <a class='nav-link btn btn-secondary btn-md'><i class="fas fa-user-cog"></i> Account Settings</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link btn btn-danger" href="{{ url_for('user.logout') }}"><i
@@ -132,11 +135,11 @@
                 </div>
             </div>
             {% if not contents %}
-            <div class='text-center mt-5'>
-                <h1>No Content to Display</h1>
-                <p class = 'text-muted'>Click below to begin adding content</p>
-                <button type="button" class="btn btn-primary ml-3" data-toggle="modal" data-target="#myModal">Upload Content</button>
-            </div>
+                <div class='text-center mt-5'>
+                    <h1>No Content to Display</h1>
+                    <p class = 'text-muted'>Click below to begin adding content</p>
+                    <button type="button" class="btn btn-primary ml-3" data-toggle="modal" data-target="#myModal">Upload Content</button>
+                </div>
             {% endif %}
         </div>
 
@@ -158,18 +161,30 @@
                             {% for content in contents %}
                             <div class="col-md-4 py-2">
                                 <div class="card mb-4 box-shadow h-100">
+                                    {% if content.type == 'file' %}
                                     <img class="card-img-top"
                                         src="{{ url_for('static', filename='images/slideshow_images/') }}{{ content.path }}"
                                         alt="Card image cap" style='height: 50%; object-fit: cover'>
+                                    {% elif content.type == 'link' %}
+                                    <iframe class="card-img-top"
+                                    src = "{{ content.path }}"
+                                    title = "Card image cap" style='height: 50%; object-fit: cover; border: 0;'></iframe>
+                                    {% endif %}
                                     <div class="card-body">
                                         <hr>
                                         <p class="card-text text-muted">{{ content.path }}</p>
+                                        <div style = 'width: 0; height: 0;'>
+                                            <form id = '{{ content.path }}' action = "{{ url_for('core.remove_content') }}" method = 'POST'>
+                                                <input type='hidden' name='content_id' id='content_id' value='{{ content.path }}'>
+                                            </form>
+                                        </div>
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="btn-group">
-                                                <button type = 'button' class = 'btn btn-sm btn-outline-secondary'>Settings</button>
-                                                <button type = 'button' class="btn btn-sm btn-outline-secondary">Remove</button>
+                                                <button name = 'submit' value = '{{content.path}}' type = 'submit' class = 'btn btn-sm btn-outline-secondary'>Settings</button>
+                                                <button form = '{{ content.path }}' type = 'submit' class="btn btn-sm btn-outline-secondary">Remove</button>
                                             </div>
                                             <p class = 'text-muted'>5s</p>
+
                                         </div>
                                     </div>
                                 </div>
@@ -200,7 +215,7 @@
     });
 </script>
 
-<!-- <div class='w3-content w3-main w3-padding' style='text-align: left; margin-left: 26%;'>
+{# <div class='w3-content w3-main w3-padding' style='text-align: left; margin-left: 26%;'>
         <h1>SLIDES</h1>
         <div class='previewDiv' id='previewDiv'></div>
         {% if contents %}
@@ -244,5 +259,5 @@
         {% else %}
             <p>No Content to display - To add content, use the controls at the left.</p>
         {% endif %}
-    </div> -->
+    </div> #}
 {% endblock %}

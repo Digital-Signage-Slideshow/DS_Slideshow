@@ -13,35 +13,6 @@ def custom_500(error: dict):
     response = jsonify({'message': error})
 
 
-@bp.route('/register', methods=['GET', 'POST'])
-def register():
-    form = RegisterForm()
-
-    if current_user.is_authenticated:
-        return redirect(url_for('core.setup'))
-
-    if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(
-            form.password.data).decode('utf-8')
-
-        user = User(
-            username='Admin',
-            password=hashed_password
-        )  # may allow multiple users in future
-        
-        db.session.add(user)
-        db.session.commit()
-
-        return redirect(url_for('user.login'))
-
-    elif form.errors.get('password') == ['active_password']:
-        flash(
-            'there is already an active admin password set, please <a href = "/login">login</a> instead'
-        )
-
-    return render_template('user/register.html', form=form)
-
-
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -64,4 +35,4 @@ def login():
 @bp.route('/logout', methods=['GET', 'POST'])
 def logout():
     logout_user()
-    return redirect(url_for('.login'))
+    return redirect(url_for('core.index'))
