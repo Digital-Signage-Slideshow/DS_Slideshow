@@ -1,8 +1,8 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, jsonify
+from flask import Blueprint, flash, jsonify, redirect, render_template, url_for
 from flask_login import current_user, login_user, logout_user
-
 from slideshow.extensions import bcrypt, db
-from .forms import RegisterForm, LoginForm
+
+from .forms import LoginForm, RegisterForm
 from .models import User
 
 bp = Blueprint('user', __name__, template_folder='templates')
