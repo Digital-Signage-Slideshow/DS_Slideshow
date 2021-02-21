@@ -1,0 +1,17 @@
+{% extends 'layouts/base.html' %}
+
+
+{% block content %}
+    {% include 'macros/navbar.html' %}
+    <main>
+        <h1>profile page</h1>
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            {{ form.username() }}
+            {{ form.password(placeholder='Password') }}
+            {{ form.confirm_password(placeholder='Confirm Password') }}
+            {{ form.submit() }}
+        </form>
+    </main>
+    {% include 'macros/footer.html' %}
+{% endblock %}

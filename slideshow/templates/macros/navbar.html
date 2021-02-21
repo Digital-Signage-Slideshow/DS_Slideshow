@@ -11,25 +11,31 @@
         {#            </li>#}
         {#        </ul>#}
         <ul class="navbar-nav ml-auto">
+            {% if current_user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        {{ current_user.username }}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ url_for('core.setup') }}"><i class="fas fa-cogs"></i>&nbsp;Settings</a>
+                        <a class="dropdown-item" href="{{ url_for('user.profile', username=current_user.username) }}"><i
+                                class="fas fa-user-cog"></i>&nbsp;Profile</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ url_for('user.logout') }}">
+                            <i class="fas fa-sign-out-alt"></i>Sign Out
+                        </a>
+                    </div>
+                </li>
+            {% endif %}
             <li class="nav-item">
                 <a class="nav-link" href="#"><i class="fab fa-"></i>Documentation</a>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
-                    USERNAME
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#"><i class="fas fa-cogs"></i>&nbsp;Settings</a>
-                    <a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i>&nbsp;Profile</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{{ url_for('user.logout') }}">
-                        <i class="fas fa-sign-out-alt"></i>Sign Out
-                    </a>
-                </div>
-            </li>
             <li class="nav-item">
-                <a class="nav-link fs-30 p-0" href="#"><i class="fab fa-github"></i></a>
+                <a class="nav-link fs-30 p-0" href="https://github.com/Digital-Signage-Slideshow/DS_Slideshow"
+                   target="_blank"><i
+                        class="fab fa-github"></i></a>
             </li>
         </ul>
     </div>

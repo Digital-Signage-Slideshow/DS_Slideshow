@@ -91,6 +91,16 @@ def index():
     return render_template('index.html')
 
 
+@bp.route('/login')
+def login():
+    return redirect(url_for('user.login'))
+
+
+@bp.route('/register')
+def register():
+    return redirect(url_for('user.register'))
+
+
 @bp.route('/setup')
 @login_required
 def setup():
