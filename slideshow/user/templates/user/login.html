@@ -23,9 +23,7 @@
     <div class="flex align-center justify-center h-100">
         <form class="form-signin" action='' method='POST'>
             {{ form.csrf_token }}
-            {% include 'macros/message.html' %}
-            <img class="mb-4" src="/docs/4.6/assets/brand/bootstrap-solid.svg" alt="DigitalSignage Slider" width="72"
-                 height="72">
+            {% include 'macros/alerts.html' %}
             <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
             {{ form.username(class_='form-control', placeholder='admin') }}
             {{ form.password(class = 'form-control', placeholder = 'password') }}
@@ -33,6 +31,12 @@
                 <label>
                     {{ form.remember(class = 'checkbox') }} Remember Password
                 </label>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <a class="btn btn-block btn-sm btn-secondary" href="{{ url_for('user.register') }}">Register
+                        here</a>
+                </div>
             </div>
             {{ form.submit(class = 'form-signin btn btn-lg btn-primary btn-block mt-5') }}
         </form>

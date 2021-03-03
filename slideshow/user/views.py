@@ -33,7 +33,8 @@ def login():
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        u = User(username=form.username.data)
+        u = User(username=form.username.data, email=form.email.data)
+        u.gen_slug(form.username.data)
         u.hash_password(form.password.data)
         u.save()
         return redirect(url_for('user.login'))
@@ -53,12 +54,14 @@ def profile(username):
     form = EditProfileForm()
     if form.validate_on_submit():
         current_user.username = form.username.data
+        current_user.email = form.email.data
         current_user.password = generate_password_hash(form.password.data)
         db.session.commit()
-        flash('Your changes have been saved..')
-        return redirect(url_for('core.index'))
+        flash('Your changes have been saved..', 'success')
+        return redirect(url_for('.profile', username=current_user.username))
     elif request.method == 'GET':
         form.username.data = current_user.username
+        form.email.data = current_user.email
     return render_template('user/profile.html', title='Profile', user=user, form=form)
 
 
