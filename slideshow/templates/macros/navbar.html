@@ -12,21 +12,20 @@
         {#        </ul>#}
         <ul class="navbar-nav ml-auto">
             {% if current_user.is_authenticated %}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                       data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
-                        {{ current_user.username }}
+                <li class="nav-item">
+                    <a href="{{ url_for('core.setup') }}" class="nav-link">
+                        <i class="fas fa-cogs"></i>&ensp;Settings
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{{ url_for('core.setup') }}"><i class="fas fa-cogs"></i>&nbsp;Settings</a>
-                        <a class="dropdown-item" href="{{ url_for('user.profile', username=current_user.username) }}"><i
-                                class="fas fa-user-cog"></i>&nbsp;Profile</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ url_for('user.logout') }}">
-                            <i class="fas fa-sign-out-alt"></i>Sign Out
-                        </a>
-                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('user.profile', username=current_user.username) }}" class="nav-link">
+                        <i class="fas fa-user-cog"></i>&nbsp;Profile
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('user.logout') }}" class="nav-link">
+                        <i class="fas fa-sign-out-alt"></i>Sign&nbsp;Out
+                    </a>
                 </li>
             {% endif %}
             <li class="nav-item">

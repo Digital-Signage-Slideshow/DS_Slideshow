@@ -25,7 +25,7 @@ def login():
         if user is None or not user.check_password(form.password.data):
             return redirect(url_for('.login'))
         login_user(user, remember=form.remember.data)
-        return redirect(url_for('core.index'))
+        return redirect(url_for('core.setup'))
     return render_template('user/login.html', title='Login', form=form)
 
 
