@@ -117,8 +117,7 @@ def setup():
 
 @bp.route('/slideshow')
 def slideshow():
-    print('called')
-    images = os.listdir(upload_folder)
+    images = [image for image in os.listdir(upload_folder) if image != '.gitkeep']
     links = db.session.query(Content).filter(Content.type == 'link')
 
     return render_template(
