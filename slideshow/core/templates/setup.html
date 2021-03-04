@@ -23,8 +23,7 @@
                                     <h3>Link</h3>
                                     <p class='text-muted'>
                                         Please enter the entire path to the page. e.g. https://google.co.uk. Note some
-                                        pages will not work
-                                        with this software.
+                                        pages will not work with this software.
                                     </p>
 
                                     <div class='d-flex'>
@@ -55,7 +54,7 @@
 
                                 <form class='mt-5' action='{{ url_for('core.alter_rotation_speed') }}' method='POST'>
                                     <h3>Slideshow Speed</h3>
-                                    <p class='text-muted'>Current Speed: {{ rotation_speed | round | int }} seconds</p>
+                                    <p class='text-muted'>Current Speed: {{ rotation_speed | int }} seconds</p>
 
                                     <div class='d-flex'>
                                         <input type='text' id='alter_rotation_speed' name='alter_rotation_speed'
@@ -80,9 +79,10 @@
                 <div class="album py-5 bg-light">
 
                 <div class="container">
-                <button type="button" class="btn btn-primary ml-3" data-toggle="modal" data-target="#myModal">Upload
-                    Content
-                </button>
+                    <button type="button" class="btn btn-primary ml-3" data-toggle="modal" data-target="#myModal">
+                        Upload Content
+                    </button>
+                    <a href='/slideshow' class='btn btn-outline-secondary ml-3'>View Slideshow</a>
 
                 <!-- Project Cards -->
                 <div class="album py-5 bg-light">
@@ -98,16 +98,7 @@
                                     <div class="card mb-4 box-shadow h-100">
                                         {% if content.type == 'file' %}
                                             <img class="card-img-top"
-                                                 src="
-
-
-
-
-
-
-
-
-                                                         {{ url_for('static', filename='images/slideshow_images/') }}{{ content.path }}"
+                                                 src="{{ url_for('static', filename='images/slideshow_images/') }}{{ content.path }}"
                                                  alt="Card image cap" style='height: 50%; object-fit: cover'>
                                         {% elif content.type == 'link' %}
                                             <iframe class="card-img-top"
@@ -135,7 +126,7 @@
                                                             class="btn btn-sm btn-outline-secondary">Remove
                                                     </button>
                                                 </div>
-                                                <p class='text-muted'>5s</p>
+                                                <p class='text-muted'>{{ rotation_speed | int }}s</p>
 
                                             </div>
                                         </div>

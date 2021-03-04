@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 
-{% block styles %}
+{% block page_css %}
     <link rel='stylesheet' href='{{ url_for ('static', filename = 'css/indexFormatting.css') }}'>
 {% endblock %}
 
@@ -28,7 +28,7 @@
     {% endif %}
 {% endblock %}
 
-{% block scripts %}
+{% block page_scripts %}
     <script>
         var slideIndex = 0;
         var links =
