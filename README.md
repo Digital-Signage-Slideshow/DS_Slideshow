@@ -108,9 +108,7 @@ These are the features that are being actively considered/ worked on.
 
 These features are much further down the line. There isn't even an issue open for most of these. If you would like to try and take on one of these, please feel free to fork the repo!
 
-* Multiple user accounts.
 * Different content for different screens.
-* Landing Page different to slideshow page.
 
 ## Images
 
