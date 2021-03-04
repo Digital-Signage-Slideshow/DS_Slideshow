@@ -26,7 +26,7 @@ def custom_500(error: dict):
 def remove_content():
     if request.method == 'POST':
         content_id = request.form.get('content_id')
-        content = Content.query.filter_by(path = content_id)
+        content = Content.query.filter_by(path=content_id)
         cont_object = content.first()
 
         if cont_object.type == 'file':
@@ -63,7 +63,7 @@ def upload_file():
             filename = secure_filename(file.filename)
             file.save(os.path.join(upload_folder, filename))
 
-            new_file = Content(type = 'file', path = filename)
+            new_file = Content(type='file', path=filename)
             db.session.add(new_file)
             db.session.commit()
     else:
@@ -86,8 +86,19 @@ def upload_link():
 
 
 @bp.route('/')
+@login_required
 def index():
     return render_template('index.html')
+
+
+@bp.route('/login')
+def login():
+    return redirect(url_for('user.login'))
+
+
+@bp.route('/register')
+def register():
+    return redirect(url_for('user.register'))
 
 
 @bp.route('/setup')
@@ -99,7 +110,7 @@ def setup():
 
     return render_template(
         'setup.html',
-        contents = contents,
+        contents=contents,
         rotation_speed=rotation_speed // 1000
     )
 
@@ -112,7 +123,7 @@ def slideshow():
 
     return render_template(
         'slideshow.html',
-        images = images,
-        links = [link.path for link in links],
-        rotation_speed = rotation_speed,
+        images=images,
+        links=[link.path for link in links],
+        rotation_speed=rotation_speed,
     )

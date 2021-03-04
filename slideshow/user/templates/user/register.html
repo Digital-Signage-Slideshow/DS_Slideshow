@@ -1,0 +1,17 @@
+{% extends 'layouts/base.html' %}
+
+
+{% block content %}
+    {% include 'macros/navbar.html' %}
+    <div class="flex align-center justify-center">
+        <form class="form-signin" action="{{ url_for('user.register') }}" method="post">
+            {{ form.hidden_tag() }}
+            {{ form.username(class_='form-control', placeholder='Username') }}
+            {{ form.email(class="form-control", placeholder="Email") }}
+            {{ form.password(class_='form-control', placeholder='Password') }}
+            {{ form.confirm_password(class_='form-control', placeholder='Confirm Password') }}<br>
+            {{ form.submit(class_='btn btn-primary') }}
+        </form>
+    </div>
+    {% include 'macros/footer.html' %}
+{% endblock %}
