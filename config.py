@@ -6,14 +6,12 @@ allowed_extensions = ['png', 'jpg', 'jpeg']
 upload_folder = os.path.join(basedir, 'slideshow/static/images/slideshow_images')
 
 
-class Config(object):
+class Config:
     DEBUG = False
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(
-        basedir, 'slideshow/slideshow.db'
-    )
+    SQLALCHEMY_DATABASE_URI = 'postgresql://slideshow:password@database:5432/slideshow'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
