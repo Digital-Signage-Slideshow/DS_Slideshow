@@ -16,21 +16,3 @@ CREATE TABLE content (
     type VARCHAR(4),
     PRIMARY KEY(path)
 );
-
-INSERT INTO users(
-    created_on, 
-    updated_on, 
-    username, 
-    password, 
-    active, 
-    email, 
-    slug
-) VALUES(
-    '01-01-2000', 
-    '01-01-2000', 
-    'admin', 
-    'password', 
-    TRUE, 
-    'admin@admin.com', 
-    'admin'
-);
