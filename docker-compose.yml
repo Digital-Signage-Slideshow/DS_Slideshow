@@ -1,7 +1,17 @@
 version: '3.4'
 
 services:
-  dsslideshow:
+  database:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=slideshow
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=slideshow
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  slideshow:
     restart: always
     image: dsslideshow
     build:
@@ -9,5 +19,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:5000"
-    environment: 
-      SECRET_KEY: 'insert_secret_key_here'
+    environment:
+      SECRET_KEY: 'default_secret_key'
+    depends_on:
+      - database

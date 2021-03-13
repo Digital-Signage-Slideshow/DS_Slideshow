@@ -1,44 +1,29 @@
 {% extends 'layouts/base.html' %}
 
-{% block page_css %}
-    <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
-        }
-    </style>
-{% endblock %}
-
 {% block content %}
     <div class="flex align-center justify-center h-100">
         <form class="form-signin" action='' method='POST'>
             {{ form.csrf_token }}
             {% include 'macros/alerts.html' %}
+
             <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-            {{ form.username(class_='form-control', placeholder='admin') }}
-            {{ form.password(class = 'form-control', placeholder = 'password') }}
+
+            {{ form.username(class='form-control mb-1', placeholder='username') }}
+            {{ form.password(class='form-control', placeholder='password') }}
+
             <div class="checkbox mb-3">
                 <label>
-                    {{ form.remember(class = 'checkbox') }} Remember Password
+                    {{ form.remember(class='checkbox') }} Remember Password
                 </label>
             </div>
+
             <div class="row">
                 <div class="col">
-                    <a class="btn btn-block btn-sm btn-secondary" href="{{ url_for('user.register') }}">Register
-                        here</a>
+                    <a class="btn btn-block btn-sm btn-secondary" href="{{ url_for('user.register') }}">Register here</a>
                 </div>
             </div>
-            {{ form.submit(class = 'form-signin btn btn-lg btn-primary btn-block mt-5') }}
+            {{ form.submit(class = 'form-signin btn btn-lg btn-primary btn-block mt-2') }}
         </form>
     </div>
+    {% include 'macros/footer.html' %}
 {% endblock %}

@@ -1,5 +1,6 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -15,7 +16,7 @@
     <link rel='stylesheet' href='{{ url_for("static", filename="bootstrap/css/bootstrap.min.css") }}'>
     
     {% if title %}
-        <title>{{ title }}&ensp;&vert;&ensp;D.S.S.</title>
+        <title>{{ title }}</title>
     {% else %}
         <title>DigitalSignage Slideshow</title>
     {% endif %}
@@ -25,6 +26,7 @@
     <!-- Page Specific css -->
     {% block page_css %}{% endblock %}
 </head>
+
 <body>
 {% block content %}
 

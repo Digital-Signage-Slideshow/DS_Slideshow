@@ -9,17 +9,19 @@ class RegisterForm(FlaskForm):
     email = StringField('Email', validators=[Email()])
     password = PasswordField('Password', validators=[InputRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[InputRequired(), EqualTo('password')])
-    submit = SubmitField('Register User')
+    submit = SubmitField('Register')
 
     def validate_username(self, username):
         u = User.query.filter_by(username=username.data).first()
+
         if u is not None:
-            raise ValidationError('Please use a different username')
+            raise ValidationError('a user already exists with that username')
 
     def validate_email(self, email):
         u = User.query.filter_by(email=email.data).first()
+
         if u is not None:
-            raise ValidationError('Please use a different Email.')
+            raise ValidationError('a user already exists with that email')
 
 
 class LoginForm(FlaskForm):

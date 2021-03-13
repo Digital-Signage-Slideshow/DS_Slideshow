@@ -3,7 +3,7 @@ from datetime import datetime
 from slideshow.extensions import db
 
 
-class TimestampMixin(object):
+class TimestampMixin:
     """
     Adds timestamps to models (created & updated)
     """
@@ -11,7 +11,7 @@ class TimestampMixin(object):
     updated_on = db.Column(db.DateTime, default=datetime.utcnow(), onupdate=datetime.utcnow())
 
 
-class SQLMixin(object):
+class SQLMixin:
     """
     Adds the ability to save and delete row's from database by passing a .save() or .delete()
     """
@@ -35,7 +35,7 @@ class SQLMixin(object):
         return db.session.commit()
 
 
-class DSMixin(object):
+class DSMixin:
     """
     Digital Signage Slider custom mixin
     adds timestamps to models & the ability to save and delete row's from database by passing a .save() or .delete()
