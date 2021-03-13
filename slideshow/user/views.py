@@ -19,25 +19,32 @@ def custom_500(error: dict):
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('core.index'))
+
     form = LoginForm()
+
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
+
         if user is None or not user.check_password(form.password.data):
             return redirect(url_for('.login'))
+
         login_user(user, remember=form.remember.data)
         return redirect(url_for('core.setup'))
+
     return render_template('user/login.html', title='Login', form=form)
 
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
+
     if form.validate_on_submit():
         u = User(username=form.username.data, email=form.email.data)
         u.gen_slug(form.username.data)
         u.hash_password(form.password.data)
         u.save()
         return redirect(url_for('user.login'))
+
     return render_template('user/register.html', form=form)
 
 
