@@ -10,9 +10,14 @@ class Config:
     DEBUG = False
     TESTING = False
     CSRF_ENABLED = True
-    SECRET_KEY = os.environ.get('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI = 'postgresql://slideshow:password@database:5432/slideshow'
+    SECRET_KEY = os.urandom(24)
+    SQLALCHEMY_DATABASE_URI = 'postgresql://slideshow_user:password@localhost:5432/slideshow'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    JWT_SECRET_KEY = os.urandom(24)
+
+    DEFAULT_USERNAME='admin'
+    DEFAULT_EMAIL='admin'
+    DEFAULT_PASSWORD='password'
 
 
 class ProductionConfig(Config):
@@ -28,9 +33,6 @@ class StagingConfig(Config):
 class DevelopmentConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
-    # SQLALCHEMY_DATABASE_URI = 'postgresql://slideshow:password@localhost:5432/slideshow'
-
 
 class TestingConfig(Config):
     TESTING = True
-
