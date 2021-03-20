@@ -1,9 +1,10 @@
 # Project
 slideshow/static/images
+
 # VSCode
 __pycache__
-.DS-Store
 .vscode
+
 ### Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -204,3 +205,27 @@ fabric.properties
 # Local History for Visual Studio Code
 .history/
 /slideshow/static/images/
+
+# Imported from NPM generated gitignore
+.DS_Store
+node_modules
+/dist
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
