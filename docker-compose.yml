@@ -8,8 +8,6 @@ services:
       - POSTGRES_USER=slideshow
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=slideshow
-    volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   slideshow:
     restart: always
