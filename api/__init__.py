@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from flask_cors import CORS
 
 from .extensions import db, migrate, bcrypt, jwt, session
 from .user.models import User
@@ -38,6 +39,7 @@ def create_app():
     return app
 
 def register_extensions(app):
+    CORS(app)
     db.init_app(app)
 
     migrate.init_app(app, db)
