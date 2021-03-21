@@ -68,3 +68,9 @@ def upload_link():
         db.session.commit()
     else:
         abort(500, 'failed to upload link')
+
+@blueprint.route('/slides', methods=['GET'])
+@jwt_required()
+def slides():
+    slides = Content.query.all()
+    return jsonify(slides), 200

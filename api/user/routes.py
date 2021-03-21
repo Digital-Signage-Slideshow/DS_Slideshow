@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, jsonify, request
-from flask_jwt_extended import create_access_token, current_user, jwt_required
+from flask import Blueprint, jsonify, request, Response
+from flask_jwt_extended import create_access_token, jwt_required
 from werkzeug.security import generate_password_hash
 
 from api.extensions import db, jwt
@@ -15,7 +15,7 @@ blueprint = Blueprint(
 )
 
 @jwt.user_identity_loader
-def user_id_lookup(user):
+def user_identity_lookup(user):
     return user.id
 
 @jwt.user_lookup_loader
@@ -25,6 +25,10 @@ def user_lookup_callback(_jwt_header, jwt_data):
 
 @blueprint.route('/login', methods=['POST'])
 def login():
+    '''
+    function to check whether a users credentials are correct and issue a new JWT token on login.
+    '''
+
     username = request.json.get('username')
     password = request.json.get('password')
 
@@ -38,13 +42,28 @@ def login():
 
 @blueprint.route('/register', methods=['POST'])
 def register_user():
+    '''
+    function to register a new user account.
+    '''
+
     pass
 
-@blueprint.route('/test', methods=['GET'])
-@jwt_required
-def protected():
-    return jsonify(
-        id=current_user.id,
-        full_name=current_user.full_name,
-        username=current_user.username
-    )
+@blueprint.route('/token_valid', methods=['GET'])
+@jwt_required()
+def token_valid():
+    '''
+    function to check whether a JWT token is valid.
+    NOT IMPLEMENTED YET.
+    '''
+
+    return Response(status=200)
+
+@blueprint.route('/logout', methods=['GET'])
+@jwt_required()
+def logout():
+    '''
+    function to blacklist JWT tokens on logout.
+    NOT IMPLEMENTED YET.
+    '''
+
+    return Response(status=200)
