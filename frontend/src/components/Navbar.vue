@@ -8,29 +8,26 @@
         </button>
 
         <div class='collapse navbar-collapse' id='navbarContent'>
-            <ul class='navbar-nav ml-auto'>
-                <li class='nav-item'>
+            <ul v-if='authenticated' class='navbar-nav ml-auto'>
+                <li class='nav-item cursor-pointer'>
                     <a class='nav-link'>
-                        <i class='fas fa-cogs'></i>&ensp;Settings
+                        <i class='fas fa-cogs'></i>Settings
                     </a>
                 </li>
 
-                <div>
-                    <li class='nav-item'>
-                        <a class='nav-link'>
-                            <i class='fas fa-user-cog'></i>&nbsp;Profile
-                        </a>
-                    </li>
+                <li class='nav-item cursor-pointer'>
+                    <a class='nav-link'>
+                        <i class='fas fa-user-cog'></i>Profile
+                    </a>
+                </li>
 
-                    <li class='nav-item'>
-                        <a class='nav-link'>
-                            <i class='fas fa-sign-out-alt'></i>Sign&nbsp;Out
-                        </a>
-                    </li>
-                </div>
 
-                <li class='nav-item'>
-                    <a class='nav-link' href='#'><i class='fab fa-'></i>Documentation</a>
+                <li class='nav-item cursor-pointer'>
+                    <a class='nav-link' href='#'><i class='fab fa-'></i>GitHub</a>
+                </li>
+
+                <li class='nav-item cursor-pointer'>
+                    <a class='nav-link text-danger'>Sign Out</a>
                 </li>
 
                 <li class='nav-item'>
@@ -46,11 +43,19 @@
     </nav>
 </template>
 
+<style scoped>
+    .cursor-pointer {
+        cursor: pointer;
+    }
+</style>
+
 <script>
     export default {
         name: 'Navbar',
-        props: {
-            currentUser: Object
+        data() {
+            return {
+                authenticated: this.$store.getters.isAuthenticated,
+            }
         },
     }
 </script>

@@ -1,0 +1,2 @@
+export const UPDATE_SLIDES = 'UPDATE_SLIDES';
+export const UPDATE_PRIORITY = 'UPDATE_PRIORITY';

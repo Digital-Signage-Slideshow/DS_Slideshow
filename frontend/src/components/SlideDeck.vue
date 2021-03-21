@@ -7,15 +7,23 @@
             <div class='album pt-4'>
                 <div class='container'>
                     <h2>Content</h2>
-                    <p class='text-muted'>Drag and drop slides to reorder the slideshow (not implemented yet)</p>
+                    <p class='text-muted'>Drag and drop slides to reorder the slideshow</p>
                     <hr>
 
-                    <div class='card-deck'>
-                        <SlideCard
-                        v-for='slide in slides'
-                        v-bind:slide='slide'
-                        :key='slide.title'
-                        />
+                    {{ listSlides }}
+                    <div class='mt-2'>
+                        <draggable
+                            class='card-deck'
+                            v-model='listSlides'
+                            group='slideGroup'
+                            item-key='priority'
+                            animation='300'
+                        >
+
+                            <template #item='{element}'>
+                                <SlideCard :slide=element />
+                            </template>
+                        </draggable>
                     </div>
                 </div>
             </div>
@@ -24,23 +32,41 @@
 </template>
 
 <script>
+    import draggable from 'vuedraggable';
     import SlideCard from '@/components/SlideCard.vue';
+    // import { mapState } from 'vuex'
+
 
     export default {
         name: 'SlideDeck',
 
-        data() {
-            return {
-                rotation_speed: 10,
+        components: {
+            draggable,
+            SlideCard,
+        },
+
+        methods: {
+            reindex() {
+                this.slides.slides.forEach((element, index) => {element.priority = index});
             }
         },
 
-        props: {
-            slides: Object,
-        },
-
-        components: {
-            SlideCard,
-        },
+        computed: {
+            listSlides: {
+                get() {
+                    return this.$store.state.slides.slides;
+                },
+                set() {
+                    this.$store.commit('UPDATE_PRIORITY');
+                }
+            }
+        }
     }
 </script>
+
+<style scoped>
+    .ghost {
+        opacity: 0.5;
+        background: #c8ebfb;
+    }
+</style>
