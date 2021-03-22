@@ -28,7 +28,6 @@ class StagingConfig(Config):
 class DevelopmentConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://slideshow:password@localhost:5432/slideshow'
 
 
 class TestingConfig(Config):
