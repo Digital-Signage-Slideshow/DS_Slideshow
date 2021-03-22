@@ -43,9 +43,11 @@ To launch the Flask developement server, you should navigate to the DS-Slideshow
 migrations  slideshow display static  templates user  config.py docker-compose.yml  Dockerfile  README.md requirements.txt  wsgi.py
 ```
 
-and execute the following commands. The environment variables are stored in the .flaskenv file and will be automatically loaded. It is also recommended to launch this application in a Python virtual environment. (venv is not included in the requirements.txt and will need to be manually configured)
+and execute the following commands. The Flask specific environment variables are stored in the .flaskenv file and application specific variables are store in .env. Both of these files will be automatically loaded. It is also recommended launching this application in a Python virtual environment. (venv is not included in the requirements.txt and will need to be manually configured)
 
 ```
+> python3 -m venv your-venv-name
+
 > python3 -m pip install -r requirements.txt
 ...
 > flask run
@@ -114,10 +116,10 @@ These features are much further down the line. There isn't even an issue open fo
 
 A collection of screenshots from our gallery.
 
-![content](https://github.com/Digital-Signage-Slideshow/DS_Slideshow/blob/bootstrap/.github/content_screenshot.PNG)
-![no-content](https://github.com/Digital-Signage-Slideshow/DS_Slideshow/blob/bootstrap/.github/no_content_screenshot.PNG)
-![upload-content](https://github.com/Digital-Signage-Slideshow/DS_Slideshow/blob/bootstrap/.github/upload_content_screenshot.PNG)
-![login](https://github.com/Digital-Signage-Slideshow/DS_Slideshow/blob/bootstrap/.github/login_screenshot.PNG)
+![content](https://raw.githubusercontent.com/Digital-Signage-Slideshow/DS_Slideshow/master/.github/content_screenshot.PNG)
+![no-content](https://raw.githubusercontent.com/Digital-Signage-Slideshow/DS_Slideshow/master/.github/no_content_screenshot.PNG)
+![upload-content](https://raw.githubusercontent.com/Digital-Signage-Slideshow/DS_Slideshow/master/.github/upload_content_screenshot.PNG)
+![login](https://raw.githubusercontent.com/Digital-Signage-Slideshow/DS_Slideshow/master/.github/login_screenshot.PNG)
 
 ## Contributing
 This is an open source project written almost entirely in Python3. If you would like to contribute, please feel free to create a merge request or issue to discuss changes.
