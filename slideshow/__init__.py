@@ -1,14 +1,19 @@
 import os
 from flask import Flask
 
+from werkzeug.utils import import_string
+
 from .extensions import db, migrate, bcrypt, login_manager
 from slideshow.user.models import User
+
+cnf = import_string(
+    os.getenv('CONFIG_SETTINGS', 'config.ProductionConfig'))()
 
 
 def create_app():
     app = Flask(__name__)
 
-    app.config.from_object('config.DevelopmentConfig')
+    app.config.from_object(cnf)
 
     from .core.views import bp as core_bp
     from .user.views import bp as user_bp
@@ -40,9 +45,10 @@ def extensions(app):
 
 def create_directories():
     current_dir = os.path.abspath(os.path.dirname(__file__))
-    folders = ['images', 'videos']
+    folders = ['images', 'videos', 'images/slideshow_images',
+               'videos/slideshow_videos']
     for folder in folders:
         try:
-            os.mkdir(f'{current_dir}/static/{folder}', mode=0o666)
+            os.mkdir(f'{current_dir}/static/{folder}', mode=0o755)
         except FileExistsError:
             pass
