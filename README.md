@@ -1,5 +1,7 @@
 # Digital Signage Slideshow
 
+[![Actions Status](https://github.com/Digital-Signage-Slideshow/DS_Slideshow/actions/workflows/push.yml/badge.svg)](https://github.com/Digital-Signage-Slideshow/DS_Slideshow/actions)
+
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
 
