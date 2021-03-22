@@ -8,4 +8,4 @@ jobs:
       - name: Build
         run: docker-compose up -d
       - name: Run
-        run: docker run --network container:slideshow appropriate/curl -s --retry 10 --retry-connrefused http://localhost/
+        run: docker run --network container:ds_slideshow_slideshow_1 appropriate/curl -s --retry 10 --retry-connrefused http://localhost/
