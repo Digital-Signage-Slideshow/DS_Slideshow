@@ -41,7 +41,6 @@ def register():
 
     if form.validate_on_submit():
         u = User(username=form.username.data, email=form.email.data, password=form.password.data)
-        u.gen_slug(form.username.data)
         u.save()
         return redirect(url_for('user.login'))
     else:
@@ -79,9 +78,3 @@ def profile(username):
         form.email.data = current_user.email
 
     return render_template('user/profile.html', title='Profile', user=user, form=form)
-
-
-@bp.route('/edit_profile', methods=['POST'])
-@login_required
-def edit_profile():
-    pass
