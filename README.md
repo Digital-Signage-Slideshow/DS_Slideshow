@@ -19,7 +19,7 @@
 
 ## About the Project
 
-![Screenshot](https://github.com/Digital-Signage-Slideshow/DS_Slideshow/blob/bootstrap/.github/content_screenshot.PNG)
+![Screenshot](https://github.com/Digital-Signage-Slideshow/DS_Slideshow/blob/master/.github/content_screenshot.PNG?raw=true)
 
 DS Signage is a lightweight flask based Digital Signage system I designed for use on Raspberry Pi or similar. To get started, clone or fork this repo. For instructions on getting started, follow the usage steps below. For contributing guidelines, please see the contributing section near the end of the README.
 
@@ -41,16 +41,16 @@ This method is not recommended over the Docker hosting for any reason unless dev
 To launch the Flask development server, you should navigate to the DS-Slideshow directory (shown below).
 
 ```bash
-> ls
+$ ls
 migrations  slideshow display static  templates user  config_old.py docker-compose.yml  Dockerfile  README.md requirements.txt  wsgi.py
 ```
 
 and execute the following commands. The environment variables are stored in the .flaskenv file and will be automatically loaded. It is also recommended launching this application in a Python virtual environment. (venv is not included in the requirements.txt and will need to be manually configured)
 
-```
-> python3 -m pip install -r requirements.txt
+``` bash
+$ python3 -m pip install -r requirements.txt
 ...
-> flask run
+$ flask run
 
  * Serving Flask app "wsgi" (lazy loading)
  * Environment: development
@@ -73,14 +73,14 @@ This docker container is configured to automatically restart on startup so your 
 Navigate to the DS-Slideshow directory (shown below).
 
 ```bash
-> ls
+$ ls
 migrations  slideshow display static  templates user  config_old.py docker-compose.yml  Dockerfile  README.md requirements.txt  wsgi.py
 ```
 
 and run the following:
 
 ```bash
-docker-compose up -d --build
+$ docker-compose up -d --build
 ```
 
 The first time running may take some time as the docker container downloads and installs all prerequisites. The docker container is entirely self-contained so the requirements.txt file does not need to be run separately, this is all handled by the docker-compose.yml and Dockerfile configuration.
@@ -94,7 +94,7 @@ running docker ps will reveal the state of the docker container (formatted examp
 to halt the running of the program you can simply navigate to the DS-Slideshow directory again and execute the command:
 
 ```bash
-docker-compose down
+$ docker-compose down
 ```
 
 ## Roadmap
@@ -116,10 +116,10 @@ These features are much further down the line. There isn't even an issue open fo
 
 A collection of screenshots from our gallery.
 
-![content](https://github.com/Digital-Signage-Slideshow/DS_Slideshow/blob/bootstrap/.github/content_screenshot.PNG)
-![no-content](https://github.com/Digital-Signage-Slideshow/DS_Slideshow/blob/bootstrap/.github/no_content_screenshot.PNG)
-![upload-content](https://github.com/Digital-Signage-Slideshow/DS_Slideshow/blob/bootstrap/.github/upload_content_screenshot.PNG)
-![login](https://github.com/Digital-Signage-Slideshow/DS_Slideshow/blob/bootstrap/.github/login_screenshot.PNG)
+![content](https://github.com/Digital-Signage-Slideshow/DS_Slideshow/blob/master/.github/content_screenshot.PNG?raw=true)
+![no-content](https://github.com/Digital-Signage-Slideshow/DS_Slideshow/blob/master/.github/no_content_screenshot.PNG?raw=true)
+![upload-content](https://github.com/Digital-Signage-Slideshow/DS_Slideshow/blob/master/.github/upload_content_screenshot.PNG?raw=true)
+![login](https://github.com/Digital-Signage-Slideshow/DS_Slideshow/blob/master/.github/login_screenshot.PNG?raw=true)
 
 ## Contributing
 This is an open source project written almost entirely in Python3. If you would like to contribute, please feel free to create a merge request or issue to discuss changes.
