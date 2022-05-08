@@ -19,6 +19,7 @@ Jinja2==3.0.3
 Mako==1.1.6
 MarkupSafe==2.1.1
 pipenv==2018.11.26
+psycopg2-binary==2.9.3
 pycparser==2.21
 python-dateutil==2.8.2
 python-dotenv==0.14.0
