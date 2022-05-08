@@ -40,9 +40,8 @@ def register():
     form = RegisterForm()
 
     if form.validate_on_submit():
-        u = User(username=form.username.data, email=form.email.data)
+        u = User(username=form.username.data, email=form.email.data, password=form.password.data)
         u.gen_slug(form.username.data)
-        u.hash_password(form.password.data)
         u.save()
         return redirect(url_for('user.login'))
     else:

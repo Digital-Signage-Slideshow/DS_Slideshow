@@ -2,6 +2,8 @@ from slugify import slugify
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from slideshow.utils import slugify_text
+
 from slideshow.extensions import db
 from slideshow.utils.sql import DSMixin
 
@@ -15,9 +17,6 @@ class User(DSMixin, UserMixin, db.Model):
     password = db.Column(db.String())
     active = db.Column(db.Boolean, default=True)
 
-    def gen_slug(self, username):
-        self.slug = slugify(username)
-
     def hash_password(self, password):
         self.password = generate_password_hash(password)
 
@@ -26,3 +25,9 @@ class User(DSMixin, UserMixin, db.Model):
 
     def __repr__(self):
         return '<User: {}>'.format(self.username)
+
+    def __init__(self, username, email, password):
+        self.username = username
+        self.slug = slugify_text(username)
+        self.email = email
+        self.hash_password(password)
