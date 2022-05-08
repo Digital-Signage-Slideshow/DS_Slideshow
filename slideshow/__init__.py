@@ -2,7 +2,9 @@ import os
 from flask import Flask
 
 from .extensions import db, migrate, bcrypt, login_manager
-from slideshow.user.models import User
+from slideshow.blueprints.user.models import User
+
+from .blueprints import all_blueprints
 
 
 def create_app():
@@ -17,11 +19,8 @@ def create_app():
     """Load the instance config file."""
     app.config.from_pyfile('config_old.py', silent=True)
 
-    from .core.views import bp as core_bp
-    from .user.views import bp as user_bp
-
-    app.register_blueprint(core_bp)
-    app.register_blueprint(user_bp)
+    for blueprint in all_blueprints:
+        app.register_blueprint(blueprint)
 
     extensions(app)
 
