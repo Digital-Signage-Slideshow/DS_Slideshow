@@ -14,6 +14,7 @@ bp = Blueprint('user', __name__, template_folder='templates', url_prefix='/user/
 def custom_500(error: dict):
     response = jsonify({'message': error})
 
+
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -33,6 +34,7 @@ def login():
 
     return render_template('user/login.html', title='Login', form=form)
 
+
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
@@ -51,10 +53,12 @@ def register():
 
     return render_template('user/register.html', form=form)
 
+
 @bp.route('/logout', methods=['GET', 'POST'])
 def logout():
     logout_user()
     return redirect(url_for('core.index'))
+
 
 @bp.route('/<username>', methods=['GET', 'POST'])
 @login_required
@@ -76,6 +80,7 @@ def profile(username):
         form.email.data = current_user.email
 
     return render_template('user/profile.html', title='Profile', user=user, form=form)
+
 
 @bp.route('/edit_profile', methods=['POST'])
 @login_required

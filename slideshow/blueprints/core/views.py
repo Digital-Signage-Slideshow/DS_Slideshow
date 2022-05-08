@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 from flask_login import login_required
 import os
 
-from config_old import upload_folder, allowed_extensions
+from config.default import UPLOAD_FOLDER, ALLOWED_EXTENSIONS
 from slideshow.extensions import db
 from .models import Content
 
@@ -14,7 +14,7 @@ rotation_speed = 10000  # in miliseconds
 
 
 def allowed_files(filename):
-    return lambda f: '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
+    return lambda f: '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @bp.errorhandler(500)
@@ -30,7 +30,7 @@ def remove_content():
         cont_object = content.first()
 
         if cont_object.type == 'file':
-            os.remove(f'{upload_folder}/{cont_object.path}')
+            os.remove(f'{UPLOAD_FOLDER}/{cont_object.path}')
             content.delete()
         else:
             content.delete()
@@ -61,7 +61,7 @@ def upload_file():
             return redirect(url_for('core.setup'))
         if file and allowed_files(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(upload_folder, filename))
+            file.save(os.path.join(UPLOAD_FOLDER, filename))
 
             new_file = Content(type='file', path=filename)
             db.session.add(new_file)
@@ -88,7 +88,7 @@ def upload_link():
 @bp.route('/')
 @login_required
 def index():
-    return render_template('index.html')
+    return render_template('core/index.html')
 
 
 @bp.route('/login')
@@ -109,7 +109,7 @@ def setup():
     contents = Content.query.all()
 
     return render_template(
-        'setup.html',
+        'core/setup.html',
         contents=contents,
         rotation_speed=rotation_speed // 1000
     )
@@ -117,11 +117,11 @@ def setup():
 
 @bp.route('/slideshow')
 def slideshow():
-    images = [image for image in os.listdir(upload_folder) if image != '.gitkeep']
+    images = [image for image in os.listdir(UPLOAD_FOLDER) if image != '.gitkeep']
     links = db.session.query(Content).filter(Content.type == 'link')
 
     return render_template(
-        'slideshow.html',
+        'core/slideshow.html',
         images=images,
         links=[link.path for link in links],
         rotation_speed=rotation_speed,
