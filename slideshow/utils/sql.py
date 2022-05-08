@@ -54,6 +54,14 @@ class DSMixin:
 
         return self
 
+    def update(self, **kwargs):
+        """
+        Update the model instance
+        return: model instance
+        """
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
     def delete(self):
         """
         Delete the model instance

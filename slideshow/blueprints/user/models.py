@@ -29,4 +29,4 @@ class User(DSMixin, UserMixin, db.Model):
         self.username = username
         self.slug = slugify_text(username)
         self.email = email
-        self.hash_password(password)
+        self.password = generate_password_hash(password)

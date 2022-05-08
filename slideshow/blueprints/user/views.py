@@ -2,9 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash, jsonify,
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash
 
-from slideshow.extensions import db
-
-from .forms import RegisterForm, LoginForm, EditProfileForm
+from .forms import RegisterForm, LoginForm, EditProfileForm, ChangePasswordForm
 from .models import User
 
 bp = Blueprint('user', __name__, template_folder='templates', url_prefix='/user/')
@@ -62,19 +60,19 @@ def logout():
 @login_required
 def profile(username):
     user = User.query.filter_by(username=username).first_or_404()
-    form = EditProfileForm()
+    form = EditProfileForm(obj=user)
+    cpform = ChangePasswordForm()
 
     if form.validate_on_submit():
-        current_user.username = form.username.data
-        current_user.email = form.email.data
-        current_user.password = generate_password_hash(form.password.data)
-        db.session.commit()
-
+        form.populate_obj(user)
+        user.update()
         flash('Your changes have been saved..', 'success')
         return redirect(url_for('.profile', username=current_user.username))
 
-    elif request.method == 'GET':
-        form.username.data = current_user.username
-        form.email.data = current_user.email
-
-    return render_template('user/profile.html', title='Profile', user=user, form=form)
+    if cpform.validate_on_submit():
+        if user.check_password(cpform.old_password.data):
+            User.password = generate_password_hash(cpform.new_password.data)
+            user.update()
+            flash('Your password has been changed.', 'success')
+            return redirect(url_for('.profile', username=current_user.username))
+    return render_template('user/profile.html', title='Profile', user=user, form=form, cpform=cpform)
