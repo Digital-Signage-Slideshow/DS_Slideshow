@@ -1,5 +1,6 @@
 # Project
 slideshow/static/images
+slideshow/static/videos
 # VSCode
 __pycache__
 .DS-Store
@@ -161,7 +162,7 @@ pip-selfcheck.json
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff
-.idea
+.idea/
 
 # CMake
 cmake-build-*/
