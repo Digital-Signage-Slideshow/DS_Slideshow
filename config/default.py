@@ -2,7 +2,9 @@
 ********************************************************************************
 *                  Default configuration for the application.                  *
 ********************************************************************************
-Do not override this file. use instance/config.py instead. to override
+Do not override this file. use instance/config.py instead.
+copy the file to instance/config.py and override the settings you want to change.
+to know more about instance/config.py, visit: https://flask.palletsprojects.com/en/2.1.x/config/#instance-folders
 """
 import os
 from dotenv import load_dotenv
@@ -18,8 +20,8 @@ load_dotenv()
 
 basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
-allowed_extensions = ['png', 'jpg', 'jpeg']
-upload_folder = os.path.join(basedir, 'slideshow/static/images/slideshow_images')
+ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
+UPLOAD_FOLDER = os.path.join(basedir, 'slideshow/static/images/slideshow_images')
 
 DEBUG = True
 TESTING = False
