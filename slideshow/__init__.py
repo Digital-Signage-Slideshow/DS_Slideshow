@@ -6,9 +6,16 @@ from slideshow.user.models import User
 
 
 def create_app():
-    app = Flask(__name__)
+    """
+    Create and configure an instance of the Flask application.
+    return: Flask application instance
+    """
+    app = Flask(__name__, instance_relative_config=True)
 
-    app.config.from_object('config.DevelopmentConfig')
+    """Load the default config file."""
+    app.config.from_object('config.default')
+    """Load the instance config file."""
+    app.config.from_pyfile('config_old.py', silent=True)
 
     from .core.views import bp as core_bp
     from .user.views import bp as user_bp

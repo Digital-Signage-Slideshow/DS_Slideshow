@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 from flask_login import login_required
 import os
 
-from config import upload_folder, allowed_extensions
+from config_old import upload_folder, allowed_extensions
 from slideshow.extensions import db
 from .models import Content
 

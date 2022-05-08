@@ -1,3 +1,7 @@
+"""
+Not used anymore.
+TODO: remove file
+"""
 import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
