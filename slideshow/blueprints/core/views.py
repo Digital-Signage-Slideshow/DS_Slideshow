@@ -22,6 +22,20 @@ def custom_500(error: dict):
     response = jsonify({'message': error})
 
 
+@bp.route('/')
+@login_required
+def index():
+    images = [image for image in os.listdir(UPLOAD_FOLDER) if image != '.gitkeep']
+    links = db.session.query(Content).filter(Content.type == 'link')
+
+    return render_template(
+        'core/slideshow.html',
+        images=images,
+        links=[link.path for link in links],
+        rotation_speed=rotation_speed,
+    )
+
+
 @bp.route('/remove_content', methods=['GET', 'POST'])
 def remove_content():
     if request.method == 'POST':
@@ -85,12 +99,6 @@ def upload_link():
     return redirect(url_for('core.setup'))
 
 
-@bp.route('/')
-@login_required
-def index():
-    return render_template('core/index.html')
-
-
 @bp.route('/login')
 def login():
     return redirect(url_for('user.login'))
@@ -115,6 +123,7 @@ def setup():
     )
 
 
+# TODO: remove this route moved to index route
 @bp.route('/slideshow')
 def slideshow():
     images = [image for image in os.listdir(UPLOAD_FOLDER) if image != '.gitkeep']
