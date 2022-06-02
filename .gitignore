@@ -1,6 +1,5 @@
 # Project
-slideshow/static/images
-slideshow/static/videos
+slideshow/static/uploads/*
 # VSCode
 __pycache__
 .DS-Store
