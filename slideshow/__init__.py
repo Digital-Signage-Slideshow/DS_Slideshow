@@ -49,6 +49,6 @@ def create_directories():
     folders = ['images', 'videos']
     for folder in folders:
         try:
-            os.mkdir(f'{current_dir}/static/{folder}', mode=0o666)
+            os.mkdir(f'{current_dir}/static/uploads/{folder}', mode=0o666)
         except FileExistsError:
             pass
