@@ -11,12 +11,14 @@ class RegisterForm(FlaskForm):
     confirm_password = PasswordField('Confirm Password', validators=[InputRequired(), EqualTo('password')])
     submit = SubmitField('Register')
 
+    # TODO: move this to its own file (validators.py)
     def validate_username(self, username):
         u = User.query.filter_by(username=username.data).first()
 
         if u is not None:
             raise ValidationError('a user already exists with that username')
 
+    # TODO: move this to its own file (validators.py)
     def validate_email(self, email):
         u = User.query.filter_by(email=email.data).first()
 
@@ -27,17 +29,17 @@ class RegisterForm(FlaskForm):
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired()])
     password = PasswordField('Password', validators=[InputRequired()])
-    remember = BooleanField('RememberMe')
+    remember_me = BooleanField('RememberMe')
     submit = SubmitField('Login')
 
 
-class EditProfileForm(FlaskForm):
+class ProfileForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired()])
     email = StringField('Email', validators=[InputRequired(), Email()])
 
 
-class ChangePasswordForm(FlaskForm):
-    old_password = PasswordField('Old Password', validators=[InputRequired()])
+class PasswordForm(FlaskForm):
+    password = PasswordField('Old Password', validators=[InputRequired()])
     new_password = PasswordField('New Password', validators=[InputRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[EqualTo('new_password')])
     submit = SubmitField('Change Password')

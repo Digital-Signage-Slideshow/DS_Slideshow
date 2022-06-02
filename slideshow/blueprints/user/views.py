@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, jsonify, request
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash
+from werkzeug.urls import url_parse
 
-from .forms import RegisterForm, LoginForm, EditProfileForm, ChangePasswordForm
+from .forms import RegisterForm, LoginForm, ProfileForm, PasswordForm
 from .models import User
 
 bp = Blueprint('user', __name__, template_folder='templates', url_prefix='/user/')
@@ -13,66 +14,102 @@ def custom_500(error: dict):
     response = jsonify({'message': error})
 
 
-@bp.route('/login', methods=['GET', 'POST'])
+@bp.get('/login')
 def login():
+    """
+    Render the login page.
+    """
     if current_user.is_authenticated:
-        return redirect(url_for('core.index'))
-
+        return redirect(url_for('core.setup'))
     form = LoginForm()
+    return render_template('user/login.html', form=form)
 
+
+@bp.post('/login')
+def login_post():
+    """
+    Handle the login post request.
+    """
+    form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-
         if user is None or not user.check_password(form.password.data):
-            flash('username or password incorrect', 'danger')
-            return redirect(url_for('.login'))
+            flash('Invalid username or password')
+            return redirect(url_for('user.login'))
+        login_user(user, remember=form.remember_me.data)
+        next_page = request.args.get('next')
+        if not next_page or url_parse(next_page).netloc != '':
+            next_page = url_for('core.setup')
+        return redirect(next_page)
 
-        login_user(user, remember=form.remember.data)
-        return redirect(url_for('core.setup'))
 
-    return render_template('user/login.html', title='Login', form=form)
-
-
-@bp.route('/register', methods=['GET', 'POST'])
+@bp.get('/register')
 def register():
+    """
+    Render the register page.
+    """
+    if current_user.is_authenticated:
+        return redirect(url_for('core.setup'))
     form = RegisterForm()
+    return render_template('user/register.html', title='Register', form=form)
 
+
+@bp.post('/register')
+def register_post():
+    """
+    Handle the register post request.
+    """
+    form = RegisterForm()
     if form.validate_on_submit():
-        u = User(username=form.username.data, email=form.email.data, password=form.password.data)
-        u.save()
+        user = User(username=form.username.data, email=form.email.data, password=form.password.data)
+        user.save()
+        flash('Congratulations, you are now a registered user!', 'success')
         return redirect(url_for('user.login'))
-    else:
-        if hasattr(form, 'errors'):
-            for key, value in form.errors.items():
-                flash(value[0], 'warning')
-                break
 
-    return render_template('user/register.html', form=form)
+    if hasattr(form, 'errors'):
+        for key, value in form.errors.items():
+            flash(value[0], 'warning')
+            break
 
 
-@bp.route('/logout', methods=['GET', 'POST'])
+@bp.get('/logout')
+@login_required
 def logout():
+    """
+    Handle the logout request.
+    """
     logout_user()
     return redirect(url_for('core.index'))
 
 
-@bp.route('/<username>', methods=['GET', 'POST'])
+@bp.get('/profile')
 @login_required
-def profile(username):
-    user = User.query.filter_by(username=username).first_or_404()
-    form = EditProfileForm(obj=user)
-    cpform = ChangePasswordForm()
+def profile():
+    """
+    Render the profile page.
+    """
+    form = ProfileForm(obj=current_user)
+    pwd_form = PasswordForm()
+    return render_template('user/profile.html', title='Profile', form=form, pwd_form=pwd_form)
 
+
+@bp.post('/profile')
+@login_required
+def profile_post():
+    """
+    Handle the profile post request.
+    """
+    form = ProfileForm(obj=current_user)
     if form.validate_on_submit():
-        form.populate_obj(user)
-        user.update()
-        flash('Your changes have been saved..', 'success')
-        return redirect(url_for('.profile', username=current_user.username))
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        current_user.save()
+        flash('Your profile has been updated.', 'success')
+        return redirect(url_for('user.profile'))
 
-    if cpform.validate_on_submit():
-        if user.check_password(cpform.old_password.data):
-            User.password = generate_password_hash(cpform.new_password.data)
-            user.update()
-            flash('Your password has been changed.', 'success')
-            return redirect(url_for('.profile', username=current_user.username))
-    return render_template('user/profile.html', title='Profile', user=user, form=form, cpform=cpform)
+    pwd_form = PasswordForm()
+    if pwd_form.validate_on_submit():
+        current_user.password = generate_password_hash(pwd_form.new_password.data)
+        current_user.save()
+        flash('Your password has been updated.', 'success')
+        return redirect(url_for('user.profile'))
