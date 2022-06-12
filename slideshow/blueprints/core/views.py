@@ -75,7 +75,7 @@ def upload_file():
             return redirect(url_for('core.setup'))
         if file and allowed_files(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(UPLOAD_FOLDER, filename))
+            file.save(os.path.join(UPLOAD_FOLDER + 'images', filename))
 
             new_file = Content(type='file', path=filename)
             db.session.add(new_file)

@@ -15,13 +15,13 @@ Application configuration.
 ********************************************************************************
 """
 
-""" load environment variables from .env file """
-load_dotenv()
-
 basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
+""" load environment variables from .env file """
+load_dotenv(dotenv_path=os.path.join(basedir, '.env'))
+
 ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
-UPLOAD_FOLDER = os.path.join(basedir, 'slideshow/static/images/slideshow_images')
+UPLOAD_FOLDER = os.path.join(basedir, 'slideshow/static/uploads/')
 
 DEBUG = True
 TESTING = False
