@@ -1,66 +1,131 @@
 {% extends 'layouts/base.html' %}
 
+{% block main %}
 
-{% block content %}
-    {% include 'macros/navbar.html' %}
-    <main>
+    <section class="fullscreen valign-wrapper">
         <div class="container">
-
-            {% include 'macros/alerts.html' %}
-
-            <div class="card mt-5">
-                <div class="card-body">
-                    <h2 class="card-title">Profile</h2>
-                    <form action="" method="post">
-                        {{ form.hidden_tag() }}
-                        <div class="form-row">
-                            <div class="from-group col-md-6">
-                                {{ form.username.label }}
-                                {{ form.username(class="form-control") }}
-                            </div>
-                            <div class="form-group col-md-6">
-                                {{ form.email.label }}
-                                {{ form.email(class="form-control") }}
+            <div class="row">
+                <div class="col s12 m6">
+                            <div class="card rounded hoverable">
+                                <div class="card-content">
+                                    <span class="card-title center-align">Authentication</span>
+                                    <form action="" method="POST">
+                                        {{ form.hidden_tag() }}
+                                        <div class="row">
+                                            <div class="input-field col s12 m6">
+                                                {{ form.username(class="validate") }}
+                                                {{ form.username.label }}
+                                            </div>
+                                            <div class="input-field col s12 m6">
+                                                {{ form.email(class="validate") }}
+                                                {{ form.email.label }}
+                                            </div>
+                                        </div>
+                                        <div class="row center-align">
+                                            {{ form.submit(class="btn blue accent-4 waves-effect waves-light") }}
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-lg btn-block btn-primary">Update</button>
-                    </form>
+                <div class="col s12 m6">
+                    <div class="card rounded hoverable">
+                                <div class="card-content">
+                                    <span class="card-title center-align">Update Password</span>
+                                    <form action="" method="POST">
+                                        {{ pwd_form.hidden_tag() }}
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                {{ pwd_form.password(class="validate") }}
+                                                {{ pwd_form.password.label }}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                {{ pwd_form.new_password(class="validate") }}
+                                                {{ pwd_form.new_password.label }}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                {{ pwd_form.confirm_password(class="validate") }}
+                                                {{ pwd_form.confirm_password.label }}
+                                            </div>
+                                        </div>
+                                        <div class="row center-align">
+                                            {{ pwd_form.submit(class="btn blue accent-4 waves-effect waves-light") }}
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                 </div>
             </div>
-
-            <div class="card mt-5">
-                <div class="card-body">
-                    <h2 class="card-title">Change Password</h2>
-                    <form action="" method="post">
-                        {{ pwd_form.hidden_tag() }}
-                        <div class="form-row">
-                            <div class="from-group col-md-12">
-                                {{ pwd_form.password.label }}
-                                {{ pwd_form.password(class="form-control") }}
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="from-group col-md-6">
-                                {{ pwd_form.new_password.label }}
-                                {{ pwd_form.new_password(class="form-control") }}
-                            </div>
-                            <div class="form-group col-md-6">
-                                {{ pwd_form.confirm_password.label }}
-                                {{ pwd_form.confirm_password(class="form-control") }}
-                            </div>
-                        </div>
-                        {{ pwd_form.submit(class="btn btn-lg btn-block btn-primary") }}
-                    </form>
-                </div>
-            </div>
-
         </div>
-    </main>
-    {% include 'macros/footer.html' %}
+    </section>
+
 {% endblock %}
 
-{% block page_scripts %}
-    <script>
-        $('.alert').alert()
-    </script>
-{% endblock %}
+
+{#{% block content %}#}
+{#    {% include 'macros/navbar.html' %}#}
+{#    <main>#}
+{#        <div class="container">#}
+{##}
+{#            {% include 'macros/alerts.html' %}#}
+{##}
+{#            <div class="card mt-5">#}
+{#                <div class="card-body">#}
+{#                    <h2 class="card-title">Profile</h2>#}
+{#                    <form action="" method="post">#}
+{#                        {{ form.hidden_tag() }}#}
+{#                        <div class="form-row">#}
+{#                            <div class="from-group col-md-6">#}
+{#                                {{ form.username.label }}#}
+{#                                {{ form.username(class="form-control") }}#}
+{#                            </div>#}
+{#                            <div class="form-group col-md-6">#}
+{#                                {{ form.email.label }}#}
+{#                                {{ form.email(class="form-control") }}#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <button type="submit" class="btn btn-lg btn-block btn-primary">Update</button>#}
+{#                    </form>#}
+{#                </div>#}
+{#            </div>#}
+{##}
+{#            <div class="card mt-5">#}
+{#                <div class="card-body">#}
+{#                    <h2 class="card-title">Change Password</h2>#}
+{#                    <form action="" method="post">#}
+{#                        {{ pwd_form.hidden_tag() }}#}
+{#                        <div class="form-row">#}
+{#                            <div class="from-group col-md-12">#}
+{#                                {{ pwd_form.password.label }}#}
+{#                                {{ pwd_form.password(class="form-control") }}#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="form-row">#}
+{#                            <div class="from-group col-md-6">#}
+{#                                {{ pwd_form.new_password.label }}#}
+{#                                {{ pwd_form.new_password(class="form-control") }}#}
+{#                            </div>#}
+{#                            <div class="form-group col-md-6">#}
+{#                                {{ pwd_form.confirm_password.label }}#}
+{#                                {{ pwd_form.confirm_password(class="form-control") }}#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        {{ pwd_form.submit(class="btn btn-lg btn-block btn-primary") }}#}
+{#                    </form>#}
+{#                </div>#}
+{#            </div>#}
+{##}
+{#        </div>#}
+{#    </main>#}
+{#    {% include 'macros/footer.html' %}#}
+{#{% endblock %}#}
+{##}
+{#{% block page_scripts %}#}
+{#    <script>#}
+{#        $('.alert').alert()#}
+{#    </script>#}
+{#{% endblock %}#}

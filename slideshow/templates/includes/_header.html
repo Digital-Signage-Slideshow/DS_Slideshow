@@ -1,0 +1,25 @@
+<header>
+
+    <div id="modal1" class="modal">
+        <div class="modal-content center-align">
+            <h1>Logout</h1>
+            <h4>Are you sure you want to log out?</h4>
+            <a href="{{ url_for('user.logout') }}" class="btn waves-effect waves-light green">YES</a>
+        </div>
+    </div>
+
+
+    <nav class="blue accent-4">
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo">DS Slideshow</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="">Displays</a></li>
+                <li><a href="">Contents</a></li>
+                <li><a href="{{ url_for('user.profile') }}">Profile</a></li>
+                <li><a href="#modal1" class="modal-trigger">Logout</a></li>
+                <li><a href="{{ url_for('core.setup') }}">Setup</a></li>
+            </ul>
+        </div>
+    </nav>
+
+</header>

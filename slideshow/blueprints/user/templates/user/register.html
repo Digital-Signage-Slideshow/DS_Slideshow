@@ -1,20 +1,64 @@
-{% extends 'layouts/base.html' %}
+{% extends 'layouts/core.html' %}
 
-{% block content %}
-    <div class="flex align-center justify-center h-100">
-        <form class="form-signin" action="{{ url_for('user.register') }}" method="post">
-            {% include 'macros/alerts.html' %}
+{% block main %}
 
-            <h1 class="h3 mb-3 font-weight-normal">Register Here</h1>
+    <section class="fullscreen valign-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m6 offset-m3">
+                    <div class="card rounded hoverable">
+                        <div class="card-content">
+                            <span class="card-title center-align">Register</span>
+                            <form action="" method="POST">
+                                {{ form.hidden_tag() }}
+                                <div class="row">
+                                    <div class="input-field col s12 m6">
+                                        {{ form.username(class="validate") }}
+                                        {{ form.username.label }}
+                                    </div>
+                                    <div class="input-field col s12 m6">
+                                        {{ form.email(class="validate") }}
+                                        {{ form.email.label }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12 m6">
+                                        {{ form.password(class="validate") }}
+                                        {{ form.password.label }}
+                                    </div>
+                                    <div class="input-field col s12 m6">
+                                        {{ form.confirm_password(class="validate") }}
+                                        {{ form.confirm_password.label }}
+                                    </div>
+                                </div>
+                                <div class="row center-align">
+                                    {{ form.submit(class="btn blue accent-4 waves-effect waves-light") }}
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            {{ form.csrf_token }}
-            {{ form.username(class='form-control mt-3 rounded-0', placeholder='Username') }}
-            {{ form.email(type='email', class='form-control mt-3 rounded-0', placeholder="Email") }}
-            {{ form.password(class='form-control mt-3 rounded-0', placeholder='Password') }}
-            {{ form.confirm_password(class='form-control mt-3 rounded-0', placeholder='Confirm Password') }}
-
-            {{ form.submit(class='form-signin btn btn-lg btn-primary btn-block mt-4') }}
-        </form>
-    </div>
-    {% include 'macros/footer.html' %}
 {% endblock %}
+
+{#{% block content %}#}
+{#    <div class="flex align-center justify-center h-100">#}
+{#        <form class="form-signin" action="{{ url_for('user.register') }}" method="post">#}
+{#            {% include 'macros/alerts.html' %}#}
+{##}
+{#            <h1 class="h3 mb-3 font-weight-normal">Register Here</h1>#}
+{##}
+{#            {{ form.csrf_token }}#}
+{#            {{ form.username(class='form-control mt-3 rounded-0', placeholder='Username') }}#}
+{#            {{ form.email(type='email', class='form-control mt-3 rounded-0', placeholder="Email") }}#}
+{#            {{ form.password(class='form-control mt-3 rounded-0', placeholder='Password') }}#}
+{#            {{ form.confirm_password(class='form-control mt-3 rounded-0', placeholder='Confirm Password') }}#}
+{##}
+{#            {{ form.submit(class='form-signin btn btn-lg btn-primary btn-block mt-4') }}#}
+{#        </form>#}
+{#    </div>#}
+{#    {% include 'macros/footer.html' %}#}
+{#{% endblock %}#}
