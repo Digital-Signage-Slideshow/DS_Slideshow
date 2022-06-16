@@ -36,6 +36,7 @@ class LoginForm(FlaskForm):
 class ProfileForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired()])
     email = StringField('Email', validators=[InputRequired(), Email()])
+    submit = SubmitField('Update')
 
 
 class PasswordForm(FlaskForm):
