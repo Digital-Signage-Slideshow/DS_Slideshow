@@ -18,3 +18,16 @@ section.fullscreen {
 .modal.rounded {
     border-radius: 1rem;
 }
+
+.card-content .card-title.flex{
+    display: flex;
+    justify-content: space-between;
+}
+
+.p1{
+    padding: 1rem !important;
+}
+
+.p2{
+    padding: 2rem !important;
+}

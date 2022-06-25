@@ -1,0 +1,73 @@
+{% extends 'layouts/base.html' %}
+
+
+{% block main %}
+
+    {% if displays %}
+
+        <section>
+            <div class="row">
+                {% for display in displays %}
+                    <div class="col s12 m3">
+                        <div class="card blue-grey darken-4 hoverable">
+                            <div class="card-content white-text">
+                                <span class="card-title">ID: {{ display.public_id }}</span>
+                                <ul>
+                                    <li>
+                                        <p>Location: {{ display.location }}</p>
+                                    </li>
+                                    <li>
+                                        <p>Active: {{ display.active }}</p>
+                                    </li>
+                                    <li>
+                                        <p>Slider ID: None</p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-action center-align">
+                                {% if display.active %}
+                                    <a href="{{ url_for('display.deactivate_display', public_id=display.public_id) }}"
+                                       class="btn yellow black-text">Deactivate</a>
+                                {% else %}
+                                    <a href="{{ url_for('display.activate_display', public_id=display.public_id) }}"
+                                       class="left btn green white-text">Activate</a>
+                                {% endif %}
+                                <a href="#deleteDisplayModal{{ display.public_id }}"
+                                   class="btn small red modal-trigger">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="deleteDisplayModal{{ display.public_id }}" class="modal">
+                        <div class="modal-content">
+                            <h4>Delete Display : {{ display.public_id }}</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab alias aspernatur debitis
+                                enim eveniet expedita, libero maiores necessitatibus nihil obcaecati quaerat quia rerum
+                                soluta. Ex id in laboriosam molestiae. Culpa, perferendis, praesentium?</p>
+                        </div>
+
+                        <div class="modal-footer">
+                            <a href="{{ url_for('display.delete_display', public_id=display.public_id) }}"
+                               class="modal-close waves-effect waves-green btn-flat">Agree</a>
+                        </div>
+                    </div>
+
+                {% endfor %}
+
+            </div>
+        </section>
+
+
+    {% else %}
+        <h1>No Displays Available.</h1>
+    {% endif %}
+
+
+    <div class="fixed-action-btn">
+        <a href="{{ url_for('display.create_display') }}"
+           class="btn-floating btn-large blue accent-3 pulse modal-trigger">
+            <i class="large material-icons">add</i>
+        </a>
+    </div>
+
+{% endblock %}
