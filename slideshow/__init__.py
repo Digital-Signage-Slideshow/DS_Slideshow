@@ -2,8 +2,9 @@ import os
 from flask import Flask
 
 from .extensions import db, migrate, bcrypt, login_manager
-from slideshow.user.models import User
+from slideshow.blueprints.user.models import User
 from .utils import create_directory
+from .blueprints import blueprints
 
 
 def create_app(config_class=None):
@@ -34,11 +35,9 @@ def create_app(config_class=None):
         # Create the database
         db.create_all()
 
-    from .core.views import bp as core_bp
-    from .user.views import bp as user_bp
-
-    app.register_blueprint(core_bp)
-    app.register_blueprint(user_bp)
+    # Register the blueprints
+    for blueprint in blueprints:
+        app.register_blueprint(blueprint)
 
     extensions(app)
 
