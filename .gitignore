@@ -1,5 +1,6 @@
 # Project
 slideshow/static/images
+*.db
 # VSCode
 __pycache__
 .DS-Store

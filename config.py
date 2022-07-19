@@ -11,7 +11,14 @@ class Config:
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI = 'postgresql://slideshow:password@database:5432/slideshow'
+    # Database configuration defaults to PostgreSQL
+    DB_TYPE = os.getenv('DB_TYPE', 'postgresql')
+    DB_USER = os.getenv('DB_USER', 'slideshow')
+    DB_PASS = os.getenv('DB_PASS', 'password')
+    DB_HOST = os.getenv('DB_HOST', 'database')
+    DB_NAME = os.getenv('DB_NAME', 'slideshow')
+    DB_PORT = os.getenv('DB_PORT', '5432')
+    SQLALCHEMY_DATABASE_URI = f'{DB_TYPE}://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
@@ -28,8 +35,8 @@ class StagingConfig(Config):
 class DevelopmentConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'slideshow.db')
 
 
 class TestingConfig(Config):
     TESTING = True
-

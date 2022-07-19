@@ -4,11 +4,33 @@ from flask import Flask
 from .extensions import db, migrate, bcrypt, login_manager
 from slideshow.user.models import User
 
+def create_app(config_class=None):
+    """
+    Create and configure an instance of the Flask application.
 
-def create_app():
+    Args:
+        config_class: str: name of the config class to use. defaults to ProductionConfig
+
+    Returns:
+        app: Flask: the Flask application
+    """
+    if config_class is None:
+        config_class = 'config.ProductionConfig'
+
     app = Flask(__name__)
 
-    app.config.from_object('config.DevelopmentConfig')
+    app.config.from_object(config_class)
+
+    @app.before_first_request
+    def before_first_request():
+        """
+        Before the first request, create the directories and database for the application.
+        """
+        # Create the directories
+        create_directories()
+
+        # Create the database
+        db.create_all()
 
     from .core.views import bp as core_bp
     from .user.views import bp as user_bp
@@ -17,10 +39,6 @@ def create_app():
     app.register_blueprint(user_bp)
 
     extensions(app)
-
-    with app.app_context():
-        db.create_all()
-        create_directories()
 
     return app
 
