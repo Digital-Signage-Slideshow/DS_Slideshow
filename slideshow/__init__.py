@@ -3,6 +3,8 @@ from flask import Flask
 
 from .extensions import db, migrate, bcrypt, login_manager
 from slideshow.user.models import User
+from .utils import create_directory
+
 
 def create_app(config_class=None):
     """
@@ -57,10 +59,19 @@ def extensions(app):
 
 
 def create_directories():
-    current_dir = os.path.abspath(os.path.dirname(__file__))
-    folders = ['images', 'videos']
-    for folder in folders:
-        try:
-            os.mkdir(f'{current_dir}/static/{folder}', mode=0o666)
-        except FileExistsError:
-            pass
+    """
+    Create the directories for the application.
+    """
+    # Create the upload directory
+    try:
+        create_directory(os.getcwd(), 'uploads')
+    except FileExistsError:
+        pass
+
+    # Create the images/video directory
+    try:
+        folders = ['images', 'videos']
+        for folder in folders:
+            create_directory(os.path.join(os.getcwd(), 'uploads'), folder)
+    except FileExistsError:
+        pass
