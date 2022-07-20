@@ -5,25 +5,63 @@
 {% endblock %}
 
 {% block content %}
-    {% if not links and not images %}
-    <body class = 'not_found'>
-        <div class = 'text-center'>
-            <h2>No Content to Display</h2>
-            <p>Please <a href='{{ url_for("core.setup") }}'>click here</a> to add content.</p>
+
+    {% if contents %}
+        <div id="carouselExampleSlidesOnly" class="carousel slide carousel-fade" data-ride="carousel">
+            <div class="carousel-inner">
+                {% for content in contents %}
+                    {% if content.priority == 1 %}
+                        {% if content.type == 'file' %}
+                            <div class="carousel-item active" data-interval="{{ content.interval }}">
+                                <img src="{{ url_for('uploaded_file', filename=content.path) }}"
+                                     class="d-block w-100 h-100"
+                                     alt="...">
+                            </div>
+                        {% elif content.type == 'video' %}
+                            <div class="carousel-item active" data-interval="{{ content.interval }}">
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    <video class="d-block w-100 h-100"
+                                           src="{{ url_for('uploaded_file', filename=content.path) }}"
+                                           autoplay="autoplay" loop="loop">
+                                    </video>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="carousel-item active" data-interval="{{ content.interval }}">
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    <iframe src="{{ content.path }}" frameborder="0"></iframe>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        {% if content.type == 'file' %}
+                            <div class="carousel-item" data-interval="{{ content.interval }}">
+                                <img src="{{ url_for('uploaded_file', filename=content.path) }}"
+                                     class="d-block w-100 h-100"
+                                     alt="...">
+                            </div>
+                        {% elif content.type == 'video' %}
+                            <div class="carousel-item" data-interval="{{ content.interval }}">
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    <video class="d-block w-100 h-100"
+                                           src="{{ url_for('uploaded_file', filename=content.path) }}"
+                                           autoplay="autoplay" loop="loop">
+                                    </video>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="carousel-item" data-interval="{{ content.interval }}">
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    <iframe src="{{ content.path }}" frameborder="0"></iframe>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
-    </body>
+    {% else %}
+        <h1 class="display-1">No Contents</h1>
     {% endif %}
 
-    {% if links or images %}
-        <div class='slideshowDiv'>
-            {% for image in images %}
-                <img class='slideshowContent'
-                     src='{{ url_for('static', filename = 'images/slideshow_images/' + image) }}'>
-            {% endfor %}
-
-            {% for link in links %}
-                <iframe src='{{ link }}' class='slideshowContent'></iframe>
-            {% endfor %}
-        </div>
-    {% endif %}
 {% endblock %}

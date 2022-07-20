@@ -1,0 +1,18 @@
+html,
+body,
+main {
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    background-color: #f5f5f5;
+    overflow: hidden;
+}
+
+main > div {
+    height: 100%;
+}
+
+main div.carousel-inner,
+main div.carousel-inner > div.carousel-item {
+    height: 100%;
+}

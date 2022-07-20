@@ -60,13 +60,11 @@ def slideshow():
     """
     Displays the slideshow page.
     """
-    images = [image for image in os.listdir(upload_folder) if image != '.gitkeep']
-    links = db.session.query(Content).filter(Content.type == 'link')
+    contents = Content.query.filter_by(active=True).all()
 
     return render_template(
         'slideshow.html',
-        images=images,
-        links=[link.path for link in links],
+        contents=contents,
         rotation_speed=rotation_speed,
     )
 
