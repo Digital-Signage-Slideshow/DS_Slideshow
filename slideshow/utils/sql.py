@@ -3,44 +3,13 @@ from datetime import datetime
 from slideshow.extensions import db
 
 
-class TimestampMixin:
-    """
-    Adds timestamps to models (created & updated)
-    """
-    created_on = db.Column(db.DateTime, default=datetime.utcnow())
-    updated_on = db.Column(db.DateTime, default=datetime.utcnow(), onupdate=datetime.utcnow())
-
-
 class SQLMixin:
     """
-    Adds the ability to save and delete row's from database by passing a .save() or .delete()
+    Adds the ability to save, update, and delete a model instance
+    add tracking of model creation and update
     """
 
-    def save(self):
-        """
-        Save the model instance
-        return: model instance
-        """
-        db.session.add(self)
-        db.session.commit()
-
-        return self
-
-    def delete(self):
-        """
-        Delete the model instance
-        return: commit session result
-        """
-        db.session.delete(self)
-        return db.session.commit()
-
-
-class DSMixin:
-    """
-    Digital Signage Slider custom mixin
-    adds timestamps to models & the ability to save and delete row's from database by passing a .save() or .delete()
-    """
-    # adds created_on and updated_on to model
+    # Track modifications to the model
     created_on = db.Column(db.DateTime, default=datetime.utcnow())
     updated_on = db.Column(db.DateTime, default=datetime.utcnow(), onupdate=datetime.utcnow())
 
@@ -53,6 +22,15 @@ class DSMixin:
         db.session.commit()
 
         return self
+
+    def update(self, **kwargs):
+        """
+        Update the model instance
+        return: model instance
+        """
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+        return self.save()
 
     def delete(self):
         """
