@@ -1,7 +1,7 @@
-{% extends 'layouts/base.html' %}
+{% extends 'layouts/core.html' %}
 
 {% block page_css %}
-    <link rel='stylesheet' href='{{ url_for ('static', filename = 'css/indexFormatting.css') }}'>
+    <link rel='stylesheet' href='{{ url_for ('static', filename = 'css/ds_slider.css') }}'>
 {% endblock %}
 
 {% block content %}
@@ -26,41 +26,4 @@
             {% endfor %}
         </div>
     {% endif %}
-{% endblock %}
-
-{% block page_scripts %}
-    <script>
-        var slideIndex = 0;
-        var links =
-        {{ links | safe}}
-        var images =
-        {{ images | safe }}
-
-        if (images.length > 0 || links.length > 0) {
-            carousel();
-        } else {
-            setTimeout(refreshPage, 5000);
-        }
-
-        function refreshPage() {
-            location.reload(true);
-        }
-
-        function carousel() {
-            var i;
-            var x = document.getElementsByClassName('slideshowContent');
-            for (i = 0; i < x.length; i++) {
-                x[i].style.display = 'none';
-            }
-
-            slideIndex++;
-            if (slideIndex > x.length) {
-                slideIndex = 1;
-                location.reload();
-            }
-
-            x[slideIndex - 1].style.display = 'block';
-            setTimeout(carousel, {{ rotation_speed }});
-        }
-    </script>
 {% endblock %}
