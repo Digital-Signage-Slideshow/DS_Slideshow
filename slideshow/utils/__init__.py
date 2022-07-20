@@ -1,4 +1,27 @@
-from os import path
+def random_string(length: int = 10) -> str:
+    """
+    Generate a random string.
+
+    Args:
+        length: int: length of the string
+
+    Returns:
+        str: random string
+    """
+    import random
+    import string
+    return ''.join(random.SystemRandom().choice(string.ascii_letters + string.digits) for _ in range(length))
+
+
+def generate_uuid():
+    """
+    Generate a UUID.
+
+    Returns:
+        str: UUID
+    """
+    import uuid
+    return str(uuid.uuid4())
 
 
 def get_file_extension(f_path: str) -> str:
@@ -25,6 +48,7 @@ def get_file_name(f_path: str) -> str:
     Returns:
         str: file name
     """
+    from os import path
     return path.basename(f_path)
 
 

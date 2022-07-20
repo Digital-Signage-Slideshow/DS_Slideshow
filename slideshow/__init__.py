@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, send_from_directory
 
 from .extensions import db, migrate, bcrypt, login_manager
 from slideshow.blueprints.user.models import User
@@ -38,6 +38,13 @@ def create_app(config_class=None):
     # Register the blueprints
     for blueprint in blueprints:
         app.register_blueprint(blueprint)
+
+    @app.route('/uploads/<path:filename>')
+    def uploaded_file(filename):
+        """
+        Serve the uploaded files.
+        """
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
     extensions(app)
 

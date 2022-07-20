@@ -1,20 +1,18 @@
-from flask import render_template, request, redirect, url_for, flash, abort, \
-    jsonify, Blueprint
+from flask import render_template, request, redirect, url_for, flash, jsonify, Blueprint
 from werkzeug.utils import secure_filename
 from flask_login import login_required
 import os
 
-from config import upload_folder, allowed_extensions
 from slideshow.extensions import db
+from slideshow.utils import allowed_file_extensions, get_file_extension, generate_uuid
 from .models import Content
+
+from config import UPLOAD_FOLDER
 
 bp = Blueprint('core', __name__, template_folder='templates')
 
 rotation_speed = 10000  # in miliseconds
-
-
-def allowed_files(filename):
-    return lambda f: '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
+upload_folder = UPLOAD_FOLDER
 
 
 @bp.errorhandler(500)
@@ -22,25 +20,62 @@ def custom_500(error: dict):
     response = jsonify({'message': error})
 
 
-@bp.route('/remove_content', methods=['GET', 'POST'])
-def remove_content():
-    if request.method == 'POST':
-        content_id = request.form.get('content_id')
-        content = Content.query.filter_by(path=content_id)
-        cont_object = content.first()
-
-        if cont_object.type == 'file':
-            os.remove(f'{upload_folder}/{cont_object.path}')
-            content.delete()
-        else:
-            content.delete()
-        db.session.commit()
-
-    return redirect(url_for('core.setup'))
+@bp.get('/')
+@login_required
+def index():
+    """
+    Displays the index page.
+    """
+    return render_template('index.html')
 
 
-@bp.route('/alter_rotation_speed', methods=['GET', 'POST'])
+@bp.get('/login')
+def login():
+    """
+    Displays the login page.
+    """
+    return redirect(url_for('user.login'))
+
+
+@bp.get('/register')
+def register():
+    """
+    Displays the register page.
+    """
+    return redirect(url_for('user.register'))
+
+
+@bp.get('/setup')
+@login_required
+def setup():
+    """
+    Displays the setup page.
+    """
+    contents = Content.query.all()
+    return render_template('setup.html', contents=contents, rotation_speed=rotation_speed // 1000)
+
+
+@bp.get('/slideshow')
+def slideshow():
+    """
+    Displays the slideshow page.
+    """
+    images = [image for image in os.listdir(upload_folder) if image != '.gitkeep']
+    links = db.session.query(Content).filter(Content.type == 'link')
+
+    return render_template(
+        'slideshow.html',
+        images=images,
+        links=[link.path for link in links],
+        rotation_speed=rotation_speed,
+    )
+
+
+@bp.post('/alter_rotation_speed')
 def alter_rotation_speed():
+    """
+    Changes the rotation speed of the slideshow.
+    """
     global rotation_speed
 
     try:
@@ -52,77 +87,68 @@ def alter_rotation_speed():
     return redirect(url_for('core.setup'))
 
 
-@bp.route('/upload_file', methods=['GET', 'POST'])
+@bp.post('/upload_file/')
+@login_required
 def upload_file():
-    if request.method == 'POST':
-        file = request.files.get('file')
+    """
+    Uploads a file to the server.
+    """
+    file = request.files['file']
 
-        if 'file' not in request.files:
-            return redirect(url_for('core.setup'))
-        if file and allowed_files(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(upload_folder, filename))
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
 
-            new_file = Content(type='file', path=filename)
-            db.session.add(new_file)
-            db.session.commit()
-    else:
-        abort(500, 'failed to upload file')
+    if file and allowed_file_extensions(file.filename):
+        # Upload the file to the uploads folder
+        file_ext = get_file_extension(file.filename)
+        filename = secure_filename(generate_uuid() + '.' + file_ext)
+        file.save(os.path.join(upload_folder, filename))
+        flash('File uploaded successfully')
 
-    return redirect(url_for('core.setup'))
-
-
-@bp.route('/upload_link', methods=['GET', 'POST'])
-def upload_link():
-    if request.method == 'POST':
-        path = request.form.to_dict()['upload_link']
-        new_link = Content(type='link', path=path)
-        db.session.add(new_link)
+        # Create a new content object
+        content = Content(type='file', path=filename)
+        db.session.add(content)
         db.session.commit()
-    else:
-        abort(500, 'failed to upload link')
 
+        return redirect(url_for('core.setup'))
+
+
+@bp.post('/remove_content')
+@login_required
+def remove_content():
+    """
+    Removes a content object from the server.
+    Removes the file from the uploads' folder.
+    """
+    content_id = request.form.get('content_id')
+    content = Content.query.filter_by(path=content_id)
+    cont_object = content.first()
+
+    if cont_object.type == 'file':
+        os.remove(f'{upload_folder}/{cont_object.path}')
+        content.delete()
+    else:
+        content.delete()
+    db.session.commit()
     return redirect(url_for('core.setup'))
 
 
-@bp.route('/')
+@bp.post('/upload_link')
 @login_required
-def index():
-    return render_template('index.html')
+def upload_link():
+    """
+    Adds a link to the database.
+    """
+    link = request.form.to_dict()['upload_link']
 
+    if link:
+        # Create a new content object
+        content = Content(type='link', path=link)
+        db.session.add(content)
+        db.session.commit()
 
-@bp.route('/login')
-def login():
-    return redirect(url_for('user.login'))
-
-
-@bp.route('/register')
-def register():
-    return redirect(url_for('user.register'))
-
-
-@bp.route('/setup')
-@login_required
-def setup():
-    global rotation_speed
-
-    contents = Content.query.all()
-
-    return render_template(
-        'setup.html',
-        contents=contents,
-        rotation_speed=rotation_speed // 1000
-    )
-
-
-@bp.route('/slideshow')
-def slideshow():
-    images = [image for image in os.listdir(upload_folder) if image != '.gitkeep']
-    links = db.session.query(Content).filter(Content.type == 'link')
-
-    return render_template(
-        'slideshow.html',
-        images=images,
-        links=[link.path for link in links],
-        rotation_speed=rotation_speed,
-    )
+        return redirect(url_for('core.setup'))
+    else:
+        flash('Please enter a link')
+        return redirect(url_for('core.setup'))
