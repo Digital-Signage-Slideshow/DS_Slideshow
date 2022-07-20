@@ -3,10 +3,10 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from slideshow.extensions import db
-from slideshow.utils.sql import DSMixin
+from slideshow.utils.sql import SQLMixin
 
 
-class User(DSMixin, UserMixin, db.Model):
+class User(SQLMixin, UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(25), unique=True, nullable=False)
@@ -23,6 +23,11 @@ class User(DSMixin, UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+
+    def __init__(self, **kwargs):
+        super(User, self).__init__(**kwargs)
+        self.gen_slug(self.username)
+        self.hash_password(self.password)
 
     def __repr__(self):
         return '<User: {}>'.format(self.username)
