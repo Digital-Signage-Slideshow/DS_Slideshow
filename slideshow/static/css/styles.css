@@ -20,6 +20,10 @@ body {
     background-color: #f5f5f5;
 }
 
+main {
+    height: calc(100vh - 7.2rem);
+}
+
 .fs-30 {
     font-size: 30px;
 }
